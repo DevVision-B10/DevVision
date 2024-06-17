@@ -1,4 +1,1 @@
 # Dev Vision
-
-dev
-test
