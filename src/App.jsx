@@ -1,10 +1,11 @@
+import Router from './shared/Router';
 import { GlobalStyle } from './styles/GlobalStyle/GlobalStyle';
 
 function App() {
   return (
     <main>
       <GlobalStyle />
-      App
+      <Router />
     </main>
   );
 }
