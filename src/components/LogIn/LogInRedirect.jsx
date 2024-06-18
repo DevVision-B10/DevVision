@@ -25,7 +25,7 @@ function LogInRedirect() {
 
     const checkUserExists = async (userId) => {
       const { data, error } = await supabase.from('Users').select('*').eq('userId', userId).single();
-      if (error && error.code !== 'PGRST116') throw new Error('사용자 조회 실패');
+      if (error) throw new Error('사용자 조회 실패');
       return data;
     };
 
