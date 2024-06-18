@@ -41,14 +41,45 @@ const Detail = () => {
         console.error('댓글 삽입 중 오류 발생:', error);
         return;
       }
-
+      // data가 iterable인지 확인
       if (Array.isArray(data)) {
-        setCommentsInfo((prev) => [...prev, ...data]);
+        setCommentsInfo((prevComments) => [...prevComments, ...data]);
+        setComments('');
       } else {
         console.error('예상하지 못한 데이터 형식:', data);
       }
     } catch (err) {
       console.error('오류 발생:', err);
+    }
+  };
+
+  const handleUpdate = async (commentIdToUpdate) => {
+    const { error } = await supabase.from('Comments').update({ content: comments }).eq('commentId', commentIdToUpdate);
+    if (error) {
+      console.error('댓글 수정 중 오류 발생:', error);
+      return;
+    } else {
+      alert('댓글이 수정되었습니다!');
+    }
+    setCommentsInfo((currentComments) =>
+      currentComments.map((comment) =>
+        comment.commentId === commentIdToUpdate ? { ...comment, content: comments } : comment
+      )
+    );
+    setComments('');
+  };
+
+  const handleDelete = async (commentIdToDelete) => {
+    const confirmed = confirm('정말로 댓글을 삭제하시겠습니까?');
+    if (confirmed) {
+      const { error } = await supabase.from('Comments').delete().eq('commentId', commentIdToDelete).select();
+      if (error) {
+        console.error('댓글 삭제 중 오류 발생:', error);
+        return;
+      }
+      setCommentsInfo((currentComments) =>
+        currentComments.filter((comment) => comment.commentId !== commentIdToDelete)
+      );
     }
   };
 
@@ -94,10 +125,12 @@ const Detail = () => {
           commentsInfo.map((comment) => (
             <Comment key={comment.commentId}>
               <CommentHeader>
-                {/* user.name 대신 user.email */}
-                {comment.username} ({comment.createdAt})
+                {/* userId 대신 user.email */}
+                {comment.userId} ({comment.createdAt})
               </CommentHeader>
               <p>{comment.content}</p>
+              <button onClick={() => handleUpdate(comment.commentId)}>수정</button>
+              <button onClick={() => handleDelete(comment.commentId)}>삭제</button>
             </Comment>
           ))}
         <CommentForm onSubmit={handleSubmit}>
@@ -118,7 +151,10 @@ export default Detail;
 
 const Container = styled.div`
   font-family: Arial, sans-serif;
-  margin: 20px;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  margin: 60px auto;
 `;
 
 const Header = styled.header`
