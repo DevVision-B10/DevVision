@@ -25,7 +25,7 @@ const MainBanner = () => {
     autoplaySpeed: 3000
   };
 
-  const images = ['/src/assets/banner1.png', '/src/assets/banner3git .png', '/src/assets/banner4.png'];
+  const images = ['/src/assets/banner1.png', '/src/assets/banner3.png', '/src/assets/banner4.png'];
 
   return (
     <BannerContainer>
