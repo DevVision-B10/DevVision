@@ -4,7 +4,11 @@ function SideBar({ user }) {
   return (
     <SideBarAside>
       <SideBarWrapper>
-        <SideBarImage src="/src/assets/pikachu.png" alt="pikachu" />
+        {user.user_metadata && user.user_metadata.avatar_url ? (
+          <SideBarImage src={user.user_metadata.avatar_url} alt="profile_image" />
+        ) : (
+          <SideBarImage src="/src/assets/blank_profile.png" alt="default_profile_image" />
+        )}
         <p>{user.email}</p>
         <SideBarNav>
           <SideBarUl>
