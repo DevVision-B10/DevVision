@@ -2,10 +2,15 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import supabase from '../../supabase/config';
 import { v4 as uuidv4 } from 'uuid';
+import thumbNailImg from '../../assets/react-thumbnail.jpg';
+import playBtn from '../../assets/playBtn.png';
+import threeDots from '../../assets/ellipsis-menu-icon.png';
+import { Link } from 'react-router-dom';
 
 const Detail = () => {
   const [commentsInfo, setCommentsInfo] = useState([]);
   const [comments, setComments] = useState('');
+  const [dropdownStates, setDropdownStates] = useState({});
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -83,55 +88,97 @@ const Detail = () => {
     }
   };
 
+  const toggleDropdown = (commentId) => {
+    setDropdownStates((prevStates) => ({
+      ...prevStates,
+      [commentId]: !prevStates[commentId]
+    }));
+  };
+
   return (
     <Container>
-      <Header>
-        <Title>2022 코딩애플 리액트 강의</Title>
-      </Header>
+      <Title>2022 코딩애플 리액트 강의</Title>
+      <TeacherName>코딩애플</TeacherName>
 
-      <IntroSection>
-        <Image src="https://via.placeholder.com/600x200" alt="React 강의" />
-        <Details>
-          <p>리액트 v18, 리액트라우터 v6, reduxjs/toolkit 이런거 씁니다</p>
-          <p>
-            <strong>Q. 다른거 만들어보나요?</strong>
-            <br />
-            A. 아뇨 재활용임
-          </p>
-          <p>
-            설치관련 에러 모음{' '}
-            <a href="https://codingapple.com/unit/react1-install-create-react-app-npx/?id=2305">링크</a>
-          </p>
-          <p>
-            전체강의는 <a href="https://codingapple.com/course/react-basic/">링크</a> / 구독자용 10% 할인코드 : YT123
-          </p>
-        </Details>
-      </IntroSection>
+      <Image src={thumbNailImg} alt="React 강의" />
+      <Details>
+        <p>리액트 v18, 리액트라우터 v6, reduxjs/toolkit 이런거 씁니다</p>
+        <p>
+          <strong>Q. 다른거 만들어보나요?</strong>
+          <br />
+          A. 아뇨 재활용임
+        </p>
+        <p>설치관련 에러 모음 https://codingapple.com/unit/react1-install-create-react-app-npx/?id=2305</p>
+        <p>
+          전체강의는 https://codingapple.com/course/react-basic/ / 구독자용 10% 할인코드 : YT123 (맨날 바뀜 최근영상
+          참고)
+        </p>
+      </Details>
 
       <CourseList>
-        <h2>강의 목록</h2>
-        <List>
-          <ListItem>2022 new 리액트 1강 : 리액트 뽕주입과 설치법</ListItem>
-          <ListItem>2022 new 리액트 2강 : JSX 문법은 3개만 알면 된다</ListItem>
-          <ListItem>2022 new 리액트 3강 : state 쓰면 뭐가 좋나면</ListItem>
-          <ListItem>2022 new 리액트 4강 : 버튼에 지리는 기능담기</ListItem>
-          <ListItem>2022 new 리액트 5강 : state가 array/object면</ListItem>
-        </List>
+        <div>
+          <StH2>강의 목록</StH2>
+        </div>
+      </CourseList>
+      <List>
+        <StyledLink to={`/`}>
+          <ListItem>
+            <PlayBtn src={playBtn} alt="플레이어 버튼" />
+            <span>2022 new 리액트 1강 : 리액트 뽕주입과 설치법</span>
+          </ListItem>
+        </StyledLink>
+        <StyledLink to={`/`}>
+          <ListItem>
+            <PlayBtn src={playBtn} alt="플레이어 버튼" />
+            <span>2022 new 리액트 2강 : JSX 문법은 3개만 알면 된다</span>
+          </ListItem>
+        </StyledLink>
+        <StyledLink to={`/`}>
+          <ListItem>
+            <PlayBtn src={playBtn} alt="플레이어 버튼" />
+            <span>2022 new 리액트 3강 : state 쓰면 뭐가 좋나면</span>
+          </ListItem>
+        </StyledLink>
+        <StyledLink to={`/`}>
+          <ListItem>
+            <PlayBtn src={playBtn} alt="플레이어 버튼" />
+            <span>2022 new 리액트 4강 : 버튼에 지리는 기능담기</span>
+          </ListItem>
+        </StyledLink>
+        <StyledLink to={`/`}>
+          <ListItem>
+            <PlayBtn src={playBtn} alt="플레이어 버튼" />
+            <span>2022 new 리액트 5강 : state가 array/object면</span>
+          </ListItem>
+        </StyledLink>
+      </List>
+
+      <CourseList>
+        <div>
+          <StH2>강의평</StH2>
+        </div>
       </CourseList>
 
-      <CommentsSection>
-        <h2>댓글</h2>
+      <div>
         {commentsInfo &&
           commentsInfo.map((comment) => (
-            <Comment key={comment.commentId}>
+            <CommentsSection key={comment.commentId}>
               <CommentHeader>
                 {/* userId 대신 user.email */}
-                {comment.userId} ({comment.createdAt})
+                <UserEmail>{comment.userId}</UserEmail>
+                <StMenuWrap>
+                  <CreatedAt>({comment.createdAt})</CreatedAt>
+                  <MenuButton onClick={() => toggleDropdown(comment.commentId)}>
+                    <MenuImg src={threeDots} alt="Menu" />
+                  </MenuButton>
+                </StMenuWrap>
               </CommentHeader>
-              <p>{comment.content}</p>
-              <button onClick={() => handleUpdate(comment.commentId)}>수정</button>
-              <button onClick={() => handleDelete(comment.commentId)}>삭제</button>
-            </Comment>
+              <StContent>{comment.content}</StContent>
+              <DropdownMenu isOpen={dropdownStates[comment.commentId]}>
+                <DropdownItem onClick={() => handleUpdate(comment.commentId)}>수정</DropdownItem>
+                <DropdownItem onClick={() => handleDelete(comment.commentId)}>삭제</DropdownItem>
+              </DropdownMenu>
+            </CommentsSection>
           ))}
         <CommentForm onSubmit={handleSubmit}>
           <StInput
@@ -142,7 +189,7 @@ const Detail = () => {
           />
           <SubmitButton type="submit">작성</SubmitButton>
         </CommentForm>
-      </CommentsSection>
+      </div>
     </Container>
   );
 };
@@ -150,63 +197,177 @@ const Detail = () => {
 export default Detail;
 
 const Container = styled.div`
-  font-family: Arial, sans-serif;
   width: 700px;
   display: flex;
   flex-direction: column;
   margin: 60px auto;
 `;
 
-const Header = styled.header`
-  background-color: #f8f8f8;
-  padding: 20px;
-  border-bottom: 1px solid #ddd;
-`;
-
 const Title = styled.h1`
-  margin: 0;
+  margin: 30px 0px 5px;
+  font-weight: 900;
+  font-size: 1.8rem;
 `;
-
-const IntroSection = styled.section`
-  display: flex;
-  margin: 20px 0;
+const TeacherName = styled.div`
+  margin: 10px 0px 20px;
+  font-weight: 500;
+  font-size: 1rem;
 `;
 
 const Image = styled.img`
-  max-width: 600px;
+  width: 700px;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  display: flex;
 `;
 
 const Details = styled.div`
-  margin-left: 20px;
+  width: 700px;
+  height: auto;
+  font-size: 1rem;
+  line-height: 32px;
+  margin: 20px auto;
+  text-overflow: ellipsis;
 `;
 
 const CourseList = styled.section`
-  margin: 20px 0;
+  width: 700px;
+  margin: 10px auto;
+  height: 40px;
+  border-top: 2px solid rgb(95, 156, 146);
+  border-bottom: 2px solid rgb(95, 156, 146);
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+`;
+
+const StH2 = styled.h2`
+  font-weight: 700;
+  font-size: 1rem;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+`;
+
+const PlayBtn = styled.img`
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  margin-left: 10px;
 `;
 
 const List = styled.ul`
-  list-style: none;
-  padding: 0;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const ListItem = styled.li`
-  padding: 10px 0;
-  border-bottom: 1px solid #ddd;
+  width: 700px;
+  height: 70px;
+  margin: 7px auto;
+  border: 1px solid rgb(227, 227, 227);
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 1rem;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
 `;
 
 const CommentsSection = styled.section`
-  margin: 20px 0;
-`;
-
-const Comment = styled.div`
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  border: 1px solid rgb(241, 246, 246);
+  border-radius: 10px;
+  position: relative;
 `;
 
 const CommentHeader = styled.p`
-  margin: 0 0 10px 0;
+  font-size: 0.8rem;
   font-weight: bold;
+  height: 30px;
+  background-color: rgb(241, 246, 246);
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  line-height: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+`;
+
+const StContent = styled.p`
+  min-height: 60px;
+  padding: 10px 5px;
+  font-size: 15px;
+  line-height: 25px;
+`;
+
+const UserEmail = styled.div`
+  display: flex;
+`;
+
+const CreatedAt = styled.div`
+  margin-right: 20px;
+  font-weight: 200;
+  font-size: 0.6rem;
+`;
+
+const StMenuWrap = styled.div`
+  display: flex;
+  height: 30px;
+`;
+
+const MenuButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MenuImg = styled.img`
+  color: rgb(95, 156, 146);
+  cursor: pointer;
+  height: 22px;
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 5px 0px;
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')}; /* 드롭다운 메뉴 토글 */
+`;
+
+const DropdownItem = styled.button`
+  display: flex;
+  background: none;
+  border: none;
+  margin: auto;
+  padding: 10px 20px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  &:hover {
+    background-color: #f1f1f1;
+  }
 `;
 
 const CommentForm = styled.form`
