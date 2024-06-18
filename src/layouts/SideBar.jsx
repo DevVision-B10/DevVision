@@ -1,11 +1,11 @@
 import { SideBarAside, SideBarButton, SideBarImage, SideBarNav, SideBarUl, SideBarWrapper } from './SideBarStyle';
 
-function SideBar() {
+function SideBar({ user }) {
   return (
     <SideBarAside>
       <SideBarWrapper>
         <SideBarImage src="/src/assets/pikachu.png" alt="pikachu" />
-        <p>피카츄</p>
+        <p>{user.email}</p>
         <SideBarNav>
           <SideBarUl>
             <li>최근 본 영상</li>
