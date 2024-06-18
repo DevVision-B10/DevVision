@@ -1,12 +1,29 @@
+import { useNavigate } from 'react-router-dom';
+import { deleteUser } from '../api/supabase/user.api';
+import useLogOut from '../hooks/useLogOut';
 import { SideBarAside, SideBarButton, SideBarImage, SideBarNav, SideBarUl, SideBarWrapper } from './SideBarStyle';
 
 function SideBar({ user, handleOnClickSideBarCategory }) {
+  const handleLogout = useLogOut();
+  const navigate = useNavigate();
+
   const handleOnClickRecentVideos = () => {
     handleOnClickSideBarCategory('recentVideos');
   };
 
   const handleOnClickChart = () => {
     handleOnClickSideBarCategory('chart');
+  };
+
+  const handleOnClickDeleteUser = async () => {
+    if (confirm('정말로 계정을 삭제하시겠습니까?')) {
+      deleteUser(user.email);
+
+      handleLogout();
+      navigate('/');
+    } else {
+      alert('계정 삭제가 취소되었습니다.');
+    }
   };
 
   return (
@@ -23,7 +40,7 @@ function SideBar({ user, handleOnClickSideBarCategory }) {
             <li onClick={handleOnClickRecentVideos}>최근 본 영상</li>
             <li onClick={handleOnClickChart}>트렌드</li>
           </SideBarUl>
-          <SideBarButton>회원탈퇴</SideBarButton>
+          <SideBarButton onClick={handleOnClickDeleteUser}>회원탈퇴</SideBarButton>
         </SideBarNav>
       </SideBarWrapper>
     </SideBarAside>

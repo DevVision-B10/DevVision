@@ -10,3 +10,15 @@ export const findOneUser = async (column, email) => {
 
   return data;
 };
+
+export const deleteUser = async (email) => {
+  const { data, error } = await supabase.from('Users').delete().eq('email', email);
+
+  if (error) {
+    console.error(error);
+    alert('계정 삭제 실패');
+    return null;
+  }
+
+  return data;
+};
