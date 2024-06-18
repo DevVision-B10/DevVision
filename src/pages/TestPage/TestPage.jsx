@@ -15,6 +15,7 @@ import useLogStore from '../../zustand/user-log';
 function TestPage() {
   const recent = useRecentVideoStore((state) => state.recent);
   const addRecentVideo = useRecentVideoStore((state) => state.addRecentVideo);
+  const initializeRecentVideos = useRecentVideoStore((state) => state.initializeRecentVideos);
   const user = useLogStore((state) => state.user);
 
   const { data: test, isLoading } = useQuery({
@@ -23,13 +24,13 @@ function TestPage() {
   });
 
   const handleOnClickCard = async (videoId) => {
-    await addRecentVideo(videoId);
-
-    const updateRecent = useRecentVideoStore.getState().recent;
-    console.log(updateRecent);
-
     if (user) {
       const { email } = user;
+      await initializeRecentVideos(email);
+      await addRecentVideo(videoId);
+
+      const updateRecent = useRecentVideoStore.getState().recent;
+
       const recentString = JSON.stringify(updateRecent);
       const date = dayjs().format('YYYY-MM-DD');
       const updateUserData = {
