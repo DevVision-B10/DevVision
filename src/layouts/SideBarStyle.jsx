@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SideBarAside = styled.aside`
-  border-right: 1px solid black;
+  border-right: 1px solid #d9d9d9;
   float: left;
   position: sticky;
   width: 300px;

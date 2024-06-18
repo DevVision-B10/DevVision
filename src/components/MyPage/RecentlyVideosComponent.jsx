@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios'; // axios import 추가
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import supabase from '../../supabase/config';
 import {
   RecentlyVideosCard,
@@ -13,6 +14,7 @@ import {
 function RecentlyVideosComponent({ user }) {
   const [recentVideos, setRecentVideos] = useState([]);
   const [videoData, setVideoData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getRecentVideoData = async () => {
@@ -76,6 +78,10 @@ function RecentlyVideosComponent({ user }) {
 
   console.log(videoData);
 
+  const handleOnClickCard = (videoId) => {
+    navigate(`/detail/${videoId}`);
+  };
+
   return (
     <RecentlyVideosWrapper>
       <RecentlyVideosSection>
@@ -83,8 +89,8 @@ function RecentlyVideosComponent({ user }) {
           <h1>최근 본 영상</h1>
         </RecentlyVideosTitleWrapper>
         <RecentlyVideosCardList>
-          {videoData.map((video, index) => (
-            <RecentlyVideosCard key={index}>
+          {videoData.map((video) => (
+            <RecentlyVideosCard key={video.id} onClick={() => handleOnClickCard(video.id)}>
               <img src={video.snippet.thumbnails.high.url} alt={video.snippet.title} />
               <p>{video.snippet.title}</p>
             </RecentlyVideosCard>

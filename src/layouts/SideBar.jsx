@@ -1,6 +1,14 @@
 import { SideBarAside, SideBarButton, SideBarImage, SideBarNav, SideBarUl, SideBarWrapper } from './SideBarStyle';
 
-function SideBar({ user }) {
+function SideBar({ user, handleOnClickSideBarCategory }) {
+  const handleOnClickRecentVideos = () => {
+    handleOnClickSideBarCategory('recentVideos');
+  };
+
+  const handleOnClickChart = () => {
+    handleOnClickSideBarCategory('chart');
+  };
+
   return (
     <SideBarAside>
       <SideBarWrapper>
@@ -12,8 +20,8 @@ function SideBar({ user }) {
         <p>{user.email}</p>
         <SideBarNav>
           <SideBarUl>
-            <li>최근 본 영상</li>
-            <li>트렌드</li>
+            <li onClick={handleOnClickRecentVideos}>최근 본 영상</li>
+            <li onClick={handleOnClickChart}>트렌드</li>
           </SideBarUl>
           <SideBarButton>회원탈퇴</SideBarButton>
         </SideBarNav>
