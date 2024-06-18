@@ -11,10 +11,10 @@ const useRecentVideoStore = create(
           state.recent.splice(index, 1);
         }
 
-        state.recent.unshift(data);
+        state.recent.push(data);
 
         if (state.recent.length > 10) {
-          state.recent.pop();
+          state.recent.shift();
         }
       });
     }
