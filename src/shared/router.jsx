@@ -4,6 +4,7 @@ import HomePage from '../components/HomePage/HomePage';
 import LogInRedirect from '../components/LogIn/LogInRedirect';
 import MyPage from '../pages/MyPage/MyPage';
 import TestPage from '../pages/TestPage/TestPage';
+
 const router = createBrowserRouter([
   {
     element: <Layout />,

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import useRecentVideoStore from '../../zustand/recent-video';
 
 /**
  * 1. 최근 본 영상에 대한 전역 관리를 추가한다.
@@ -10,19 +11,28 @@ import axios from 'axios';
  */
 
 function TestPage() {
+  const recent = useRecentVideoStore((state) => state.recent);
+  const addRecentVideo = useRecentVideoStore((state) => state.addRecentVideo);
+
   const { data: test, isLoading } = useQuery({
     queryKey: ['test'],
     queryFn: () => axios.get(import.meta.env.VITE_TEST_URL)
   });
 
+  const handleOnClickCard = (videoId) => {
+    addRecentVideo(videoId);
+    console.log(videoId);
+  };
+  console.log(test);
+
+  console.log(recent);
+
   if (isLoading) return 'loading';
-  console.log(test.data.items);
-  console.log('이거 넣어야함', test.data.items[0].id.videoId);
 
   return (
     <div>
       {test.data.items.map((item) => (
-        <div key={item.id.videoId} style={{ cursor: 'pointer' }}>
+        <div onClick={() => handleOnClickCard(item.id.videoId)} key={item.id.videoId} style={{ cursor: 'pointer' }}>
           <img src={item.snippet.thumbnails.default.url} />
           {item.snippet.title}
         </div>
