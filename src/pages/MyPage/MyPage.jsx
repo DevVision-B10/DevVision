@@ -1,10 +1,11 @@
+import RecentlyVideosComponent from '../../components/MyPage/RecentlyVideosComponent';
 import SideBar from '../../layouts/SideBar';
 function MyPage() {
   return (
-    <main>
+    <div>
       <SideBar />
-      <div>바디</div>
-    </main>
+      <RecentlyVideosComponent />
+    </div>
   );
 }
 
