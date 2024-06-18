@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import supabase from '../supabase/config';
+import supabase from '../../supabase/config';
 import { v4 as uuidv4 } from 'uuid';
 
 const Detail = () => {
