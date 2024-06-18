@@ -6,22 +6,20 @@ const useLogStore = create(
   persist(
     immer((set) => ({
       user: null,
-      logIn: () => {
+      logIn: (userData) => {
         set((state) => {
-          return {
-            user: state.user
-          };
+          state.user = userData;
         });
       },
       logOut: () => {
-        set({
-          user: null
+        set((state) => {
+          state.user = null;
         });
       }
     })),
     {
       name: 'loggedIn_user'
-      //getStorage :()=>sessionStorage
+      // getStorage: () => sessionStorage
     }
   )
 );

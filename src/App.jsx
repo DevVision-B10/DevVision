@@ -1,16 +1,8 @@
-import LogIn from './components/LogIn/LogIn';
-import { GlobalStyle } from './styles/GlobalStyle/GlobalStyle';
-import useModalStore from './zustand/modal';
+import { RouterProvider } from 'react-router-dom';
+import router from './shared/router';
 
 function App() {
-  const { isVisible, modalOpen } = useModalStore();
-  return (
-    <main>
-      <GlobalStyle />
-      <button onClick={() => modalOpen()}>로그인</button>
-      {isVisible && <LogIn />}
-    </main>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
