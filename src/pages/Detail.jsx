@@ -1,6 +1,57 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import supabase from '../supabase/config';
+import { v4 as uuidv4 } from 'uuid';
 
 const Detail = () => {
+  const [commentsInfo, setCommentsInfo] = useState([]);
+  const [comments, setComments] = useState('');
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const { data: Comments, error } = await supabase.from('Comments').select('*');
+      if (error) {
+        console.error(error);
+        return;
+      }
+      setCommentsInfo(Comments);
+      console.log('Comments', Comments);
+    };
+    fetchComments();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!comments) return alert('댓글 내용을 입력해주세요');
+
+    try {
+      const { data, error } = await supabase
+        .from('Comments')
+        .insert({
+          commentId: uuidv4(),
+          userId: 'd0b1f507-4ef7-4f4a-97d1-5a0a83bf1a4d',
+          videoId: '370c93de-75aa-4a1d-b08c-1e0e2c7b1926',
+          content: comments,
+          createdAt: new Date().toISOString()
+        })
+        .select();
+
+      if (error) {
+        console.error('댓글 삽입 중 오류 발생:', error);
+        return;
+      }
+
+      if (Array.isArray(data)) {
+        setCommentsInfo((prev) => [...prev, ...data]);
+      } else {
+        console.error('예상하지 못한 데이터 형식:', data);
+      }
+    } catch (err) {
+      console.error('오류 발생:', err);
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -29,7 +80,7 @@ const Detail = () => {
       <CourseList>
         <h2>강의 목록</h2>
         <List>
-          <ListItem>2022 new 리액트 1강 : 리액트 뿌주입과 설치법</ListItem>
+          <ListItem>2022 new 리액트 1강 : 리액트 뽕주입과 설치법</ListItem>
           <ListItem>2022 new 리액트 2강 : JSX 문법은 3개만 알면 된다</ListItem>
           <ListItem>2022 new 리액트 3강 : state 쓰면 뭐가 좋나면</ListItem>
           <ListItem>2022 new 리액트 4강 : 버튼에 지리는 기능담기</ListItem>
@@ -39,16 +90,23 @@ const Detail = () => {
 
       <CommentsSection>
         <h2>댓글</h2>
-        <Comment>
-          <CommentHeader>멜론 머스크 (2024-01-01 01:01)</CommentHeader>
-          <p>역시 믿고 보는 코딩애플 강의 지루하지가 않음 ㅋㅋㅋㅋ 이거 보고 화성 갈끄니까~</p>
-        </Comment>
-        <Comment>
-          <CommentHeader>마크 주겨버그 (2024-01-01 01:02)</CommentHeader>
-          <p>리액트 영상 고맙습니다. 근데 최신 업데이트가 안 올라와서 별 하나 뺐습니다.</p>
-        </Comment>
-        <CommentForm>
-          <TextArea placeholder="내용을 입력해주세요" />
+        {commentsInfo &&
+          commentsInfo.map((comment) => (
+            <Comment key={comment.commentId}>
+              <CommentHeader>
+                {/* user.name 대신 user.email */}
+                {comment.username} ({comment.createdAt})
+              </CommentHeader>
+              <p>{comment.content}</p>
+            </Comment>
+          ))}
+        <CommentForm onSubmit={handleSubmit}>
+          <StInput
+            type="text"
+            placeholder="댓글을 입력해주세요"
+            value={comments}
+            onChange={(e) => setComments(e.target.value)}
+          />
           <SubmitButton type="submit">작성</SubmitButton>
         </CommentForm>
       </CommentsSection>
@@ -120,7 +178,7 @@ const CommentForm = styled.form`
   flex-direction: column;
 `;
 
-const TextArea = styled.textarea`
+const StInput = styled.input`
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ddd;
