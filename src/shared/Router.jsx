@@ -1,16 +1,25 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomePage from '../pages/HomePage/HomePage';
-import Detail from '../pages/Detail';
-
-const Router = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/detail" element={<Detail />} />
-      </Routes>
-    </BrowserRouter>
-  );
-};
-
-export default Router;
+import { createBrowserRouter } from 'react-router-dom';
+import Layout from '../Layout/Layout';
+import HomePage from '../components/HomePage/HomePage';
+import LogInRedirect from '../components/LogIn/LogInRedirect';
+import Detail from '../pages/Detail/Detail';
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />
+      },
+      {
+        path: '/auth/callback',
+        element: <LogInRedirect />
+      },
+      {
+        path: '/detail',
+        element: <Detail />
+      }
+    ]
+  }
+]);
+export default router;
