@@ -1,13 +1,8 @@
-import MyPage from './pages/MyPage/MyPage';
-import { GlobalStyle } from './styles/GlobalStyle/GlobalStyle';
+import { RouterProvider } from 'react-router-dom';
+import router from './shared/router';
 
 function App() {
-  return (
-    <main>
-      <GlobalStyle />
-      <MyPage />
-    </main>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
