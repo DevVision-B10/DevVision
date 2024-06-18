@@ -5,7 +5,7 @@ export const SideBarAside = styled.aside`
   float: left;
   position: sticky;
   width: 25vw;
-  height: 100vh;
+  height: 92vh;
   top: 0;
   display: flex;
   justify-content: center;
