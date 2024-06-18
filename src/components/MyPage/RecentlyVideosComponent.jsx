@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios'; // axios import 추가
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import supabase from '../../supabase/config';
+import { findOneUser } from '../../api/supabase/user.api';
+import { getVideoData } from '../../api/youtube/youtube.api';
 import {
   RecentlyVideosCard,
   RecentlyVideosCardList,
@@ -19,15 +19,9 @@ function RecentlyVideosComponent({ user }) {
   useEffect(() => {
     const getRecentVideoData = async () => {
       if (user && user.email) {
-        const { data: findUser, error } = await supabase
-          .from('Users')
-          .select('recentVideo')
-          .eq('email', user.email)
-          .single();
-        if (error) {
-          console.error(error);
-          return;
-        }
+        const column = 'recentVideo';
+        const findUser = await findOneUser(column, user.email);
+
         const recentData = JSON.parse(findUser.recentVideo || '[]');
         setRecentVideos(recentData);
       }
@@ -50,19 +44,7 @@ function RecentlyVideosComponent({ user }) {
       }
 
       const videoIds = recentVideos.join(',');
-
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_YOUTUBE_SEARCH_VIDEO_URL}`, {
-          params: {
-            part: 'snippet',
-            id: videoIds,
-            key: import.meta.env.VITE_YOUTUBE_KEY
-          }
-        });
-        return response.data.items;
-      } catch (error) {
-        throw new Error('Failed to fetch video data');
-      }
+      return await getVideoData(videoIds);
     },
     enabled: recentVideos.length > 0
   });
@@ -75,8 +57,6 @@ function RecentlyVideosComponent({ user }) {
 
   if (isLoading) return <div>loading</div>;
   if (isError) return <div>Error: {isError.message}</div>;
-
-  console.log(videoData);
 
   const handleOnClickCard = (videoId) => {
     navigate(`/detail/${videoId}`);

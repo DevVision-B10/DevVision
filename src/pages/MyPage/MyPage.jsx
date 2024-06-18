@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import ChartComponent from '../../components/MyPage/ChartComponent';
 import RecentlyVideosComponent from '../../components/MyPage/RecentlyVideosComponent';
 import SideBar from '../../layouts/SideBar';
 import useLogStore from '../../zustand/user-log';
@@ -15,7 +14,7 @@ function MyPage() {
     <div>
       <SideBar user={user} handleOnClickSideBarCategory={handleOnClickSideBarCategory} />
       {displayComponent === 'recentVideos' && <RecentlyVideosComponent user={user} />}
-      {displayComponent === 'chart' && <ChartComponent user={user} />}
+      {/* {displayComponent === 'chart' && <ChartComponent user={user} />} */}
     </div>
   );
 }
