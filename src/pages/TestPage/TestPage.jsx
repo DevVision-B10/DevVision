@@ -1,9 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import supabase from '../../supabase/config';
 import useRecentVideoStore from '../../zustand/recent-video';
 import useLogStore from '../../zustand/user-log';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 /**
  * 1. 최근 본 영상에 대한 전역 관리를 추가한다.
@@ -13,7 +18,7 @@ import useLogStore from '../../zustand/user-log';
  */
 
 function TestPage() {
-  const recent = useRecentVideoStore((state) => state.recent);
+  // const recent = useRecentVideoStore((state) => state.recent);
   const addRecentVideo = useRecentVideoStore((state) => state.addRecentVideo);
   const initializeRecentVideos = useRecentVideoStore((state) => state.initializeRecentVideos);
   const user = useLogStore((state) => state.user);
@@ -32,7 +37,7 @@ function TestPage() {
       const updateRecent = useRecentVideoStore.getState().recent;
 
       const recentString = JSON.stringify(updateRecent);
-      const date = dayjs().format('YYYY-MM-DD');
+      const date = dayjs().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss');
       const updateUserData = {
         email,
         recentVideo: recentString,
@@ -51,8 +56,8 @@ function TestPage() {
     }
   };
 
-  console.log(user);
-  console.log(recent);
+  // console.log(user);
+  // console.log(recent);
 
   if (isLoading) return 'loading';
 

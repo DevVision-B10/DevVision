@@ -13,7 +13,6 @@ const useRecentVideoStore = create(
       });
     },
     addRecentVideo: (data) => {
-      console.log('zustand: ' + data);
       set((state) => {
         const index = state.recent.indexOf(data);
         if (index !== -1) {
