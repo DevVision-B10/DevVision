@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import supabase from '../../supabase/config';
 import useLogStore from '../../zustand/user-log';
 
 function LogInRedirect() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { logIn } = useLogStore();
 
   useEffect(() => {
@@ -27,14 +26,13 @@ function LogInRedirect() {
         await supabase.from('Users').update(userData).eq('userId', userData.userId);
       }
       logIn(data.session.user);
-      alert('로그인에 성공했습니다 메인으로 돌아갑니다');
+
       navigate('/');
+      alert('로그인에 성공했습니다');
     };
 
-    if (location.pathname === '/auth/callback') {
-      handleAuthCallback();
-    }
-  }, [location, logIn, navigate]);
+    handleAuthCallback();
+  }, [logIn, navigate]);
 
   return <div>로딩중입니다...</div>;
 }
