@@ -69,12 +69,14 @@ function RecentlyVideosComponent({ user }) {
           <h1>최근 본 영상</h1>
         </RecentlyVideosTitleWrapper>
         <RecentlyVideosCardList>
-          {videoData.map((video) => (
-            <RecentlyVideosCard key={video.id} onClick={() => handleOnClickCard(video.id)}>
-              <img src={video.snippet.thumbnails.high.url} alt={video.snippet.title} />
-              <p>{video.snippet.title}</p>
-            </RecentlyVideosCard>
-          ))}
+          {videoData.length > 0
+            ? videoData.map((video) => (
+                <RecentlyVideosCard key={video.id} onClick={() => handleOnClickCard(video.id)}>
+                  <img src={video.snippet.thumbnails.high.url} alt={video.snippet.title} />
+                  <p>{video.snippet.title}</p>
+                </RecentlyVideosCard>
+              ))
+            : '최근 본 영상이 존재하지 않습니다.'}
         </RecentlyVideosCardList>
       </RecentlyVideosSection>
     </RecentlyVideosWrapper>
