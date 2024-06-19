@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import SearchIcon from '../assets/search-icon.png';
 import SpinnerIcon from '../assets/spinner-icon.gif';
 import CourseCard from '../components/HomePage/CourseCard';
+import MainBanner from '../components/HomePage/MainBanner';
 import useCourses from '../hooks/useCourses';
 const Grid = styled.div`
   display: flex;
@@ -85,6 +86,7 @@ function HomePage() {
 
   return (
     <>
+      <MainBanner />
       <Search>
         <form onSubmit={handleSearch}>
           <SearchInput placeholder="Search..." ref={searchRef} required />

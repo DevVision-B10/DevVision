@@ -7,7 +7,7 @@ import useLogStore from '../zustand/user-log';
 
 const TopMenubar = styled.div`
   background-color: var(--sub-color);
-  padding: 15px;
+  padding: 0 15px 0 15px;
   justify-content: space-between;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
   display: flex;
