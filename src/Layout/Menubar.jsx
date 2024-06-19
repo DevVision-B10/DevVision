@@ -28,17 +28,22 @@ const IconButton = styled.img`
   margin-right: 10px;
 `;
 
-const Menubar = () => {
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+function Menubar() {
   const { isVisible, modalOpen } = useModalStore();
   const navigate = useNavigate();
   const { user } = useLogStore();
   const handleLogOut = useLogOut();
 
   return (
-    <TopMenubar>
+    <TopMenubar className="d-flex-row">
       {isVisible && <LogIn />}
       <LogoImg src={Logo} onClick={() => navigate('/')} />
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <ButtonContainer>
         <IconButton src={MypageIcon} onClick={() => navigate('/mypage')} />
         {user ? (
           <button className="btn-navy" onClick={handleLogOut}>
@@ -49,9 +54,9 @@ const Menubar = () => {
             로그인
           </button>
         )}
-      </div>
+      </ButtonContainer>
     </TopMenubar>
   );
-};
+}
 
 export default Menubar;
