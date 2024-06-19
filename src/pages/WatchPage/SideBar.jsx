@@ -19,23 +19,29 @@ const SideBar = () => {
     return () => sidebar.removeEventListener('scroll', handleScroll);
   }, []);
   return (
-    <SideBarContainer id="sidebar">
-      {Array.from({ length: visibleCards }).map((_, i) => (
-        <Card key={i} />
-      ))}
-    </SideBarContainer>
+    <Div>
+      <Span>관련 동영상</Span>
+      <SideBarDiv>
+        <SideBarContainer id="sidebar">
+          {Array.from({ length: visibleCards }).map((_, i) => (
+            <Card key={i} />
+          ))}
+        </SideBarContainer>
+      </SideBarDiv>
+    </Div>
   );
 };
 
-const SideBarContainer = styled.div`
+const Div = styled.div`
   width: 10%;
+`;
+
+const SideBarContainer = styled.div`
   background-color: green;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 100vh;
-  overflow-y: auto;
 `;
 
 const Card = styled.div`
@@ -43,6 +49,16 @@ const Card = styled.div`
   height: 130px;
   border: 1px solid #ccc;
   border-radius: 5px;
+`;
+
+const SideBarDiv = styled.div`
+  height: 700px;
+  overflow-y: scroll;
+`;
+
+const Span = styled.span`
+  font-size: 24px;
+  font-weight: bold;
 `;
 
 export default SideBar;

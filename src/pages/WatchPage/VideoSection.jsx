@@ -1,15 +1,16 @@
 import styled from 'styled-components';
 import SideBar from './SideBar';
 import YouTube from 'react-youtube';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const VideoSection = () => {
+  const navigate = useNavigate();
   return (
     <Section>
       <SVContainer>
         <SpanContainer>
           <Span>영상제목</Span>
-          <BackBtn onClick={() => Navigate(-1)}>↩</BackBtn>
+          <BackBtn onClick={() => navigate(-1)}>↩</BackBtn>
         </SpanContainer>
         <VideoContainer>
           <YouTube
