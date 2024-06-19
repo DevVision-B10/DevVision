@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -56,7 +55,6 @@ const ChannelTitle = styled.p`
 `;
 
 const CourseCard = ({ course }) => {
-  console.log({ playListId: course.id });
   return (
     <Link to={`/playlist/${course.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <Card>

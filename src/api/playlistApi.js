@@ -1,10 +1,7 @@
 import axios from 'axios';
 
-// const VIDEO_BASE_URL = import.meta.env.VITE_YOUTUBE_PLAYLIST_URL;
 const VIDEO_PLAYLISTITEM_URL = import.meta.env.VITE_YOUTUBE_PLAYLIST_ITEM_URL;
 const YOUTUBE_KEY = import.meta.env.VITE_YOUTUBE_KEY;
-// const PLAYLIST_ID = import.meta.env.VITE_YOUTUBE_PLAYLIST_ID;
-// PLfLgtT94nNq0qTRunX9OEmUzQv4lI4pnP
 
 export const fetchApi = async (playlistId) => {
   try {

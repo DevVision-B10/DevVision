@@ -36,6 +36,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '../../api/playlistApi';
 import { useParams } from 'react-router-dom';
+import useLogStore from '../../zustand/user-log';
 
 // 1. 코딩애플 유튜브 id
 // 2. id를 이용해서 관련 목록을 가지고 올 방법이 있는지 찾아보는 것
@@ -48,6 +49,7 @@ const Detail = () => {
   const [commentsInfo, setCommentsInfo] = useState([]);
   const [comments, setComments] = useState('');
   const [dropdownStates, setDropdownStates] = useState({});
+  const { user } = useLogStore();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -81,26 +83,21 @@ const Detail = () => {
         .from('Comments')
         .insert({
           commentId: uuidv4(),
-          userId: 'd0b1f507-4ef7-4f4a-97d1-5a0a83bf1a4d',
-          videoId: '370c93de-75aa-4a1d-b08c-1e0e2c7b1926',
+          userId: user.id,
+          playlistId: id,
           content: comments,
           createdAt: new Date().toISOString()
         })
-        .select();
+        .select('*');
 
       if (error) {
         console.error('댓글 삽입 중 오류 발생:', error);
         alert('댓글 작성 중 오류가 발생했습니다.');
         return;
       }
-      // data가 iterable인지 확인
-      if (Array.isArray(data)) {
-        setCommentsInfo((prevComments) => [...prevComments, ...data]);
-        setComments('');
-      } else {
-        console.error('예상하지 못한 데이터 형식:', data);
-        alert('예상치 못한 데이터 형식입니다.');
-      }
+
+      setCommentsInfo((prevComments) => [...prevComments, ...data]);
+      setComments('');
     } catch (err) {
       console.error('오류 발생:', err);
       alert('오류가 발생했습니다.');
@@ -190,7 +187,7 @@ const Detail = () => {
                 {/* userId 대신 user.email */}
                 <UserEmail>{comment.userId}</UserEmail>
                 <StMenuWrap>
-                  <CreatedAt>({comment.createdAt})</CreatedAt>
+                  <CreatedAt>({comment.createdAt.slice(0, 10)})</CreatedAt>
                   <MenuButton onClick={() => toggleDropdown(comment.commentId)}>
                     <MenuImg src={threeDots} alt="Menu" />
                   </MenuButton>
