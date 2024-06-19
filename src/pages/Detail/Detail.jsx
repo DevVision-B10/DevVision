@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import supabase from '../../supabase/config';
 import { v4 as uuidv4 } from 'uuid';
-import thumbNailImg from '../../assets/react-thumbnail.jpg';
 import playBtn from '../../assets/playBtn.png';
 import threeDots from '../../assets/ellipsis-menu-icon.png';
 import {
