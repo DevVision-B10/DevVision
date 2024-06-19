@@ -19,7 +19,7 @@ const useCourses = (searchQuery) => {
             type: 'playlist'
           }
         });
-        console.log(response.data.items);
+
         const coursesData = await Promise.all(
           response.data.items.map(async (item) => {
             const channelResponse = await api.get('/channels', {
