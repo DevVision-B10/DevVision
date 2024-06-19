@@ -43,6 +43,15 @@ input{
 		transition: all 0.3s;
 	}
 }
+.btn-yellow{
+	border: none;
+  background-color: var(--yellow-color);
+  color: var(--white-color);
+  &:hover {
+    background-color: var(--darkyellow-color);
+    transition: all 0.3s;
+  }
+}
 .d-flex-row{
 	display: flex;
   flex-direction: row;

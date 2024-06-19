@@ -39,8 +39,7 @@ function HomePage() {
   const searchRef = useRef(null);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const { courses } = useCourses(searchQuery);
-
+  const fetchCourses = useCourses();
   useEffect(() => {
     if (searchRef.current) searchRef.current.focus();
   }, []);
@@ -49,9 +48,9 @@ function HomePage() {
     const start = pageParam * itemsPerPage;
     const end = start + itemsPerPage;
     return {
-      data: courses.slice(start, end),
+      data: fetchCourses.slice(start, end),
       nextPage: pageParam + 1,
-      totalCount: courses.length
+      totalCount: fetchCourses.length
     };
   };
 
