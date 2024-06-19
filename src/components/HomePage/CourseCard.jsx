@@ -15,6 +15,7 @@ const CourseImage = styled.img`
   height: auto;
   border-radius: 8px;
 `;
+git;
 
 const CourseTitle = styled.h3`
   font-size: 19px;
