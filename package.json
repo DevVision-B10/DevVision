@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
     "react-swiper": "^0.1.5",
+    "react-youtube": "^10.1.0",
     "styled-components": "^6.1.11",
     "uuid": "^10.0.0",
     "zustand": "^4.5.2"
