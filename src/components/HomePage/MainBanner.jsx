@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const BannerContainer = styled.div`
   margin-bottom: 20px;
+  z-index: 1;
 `;
 
 const BannerImage = styled.img`
