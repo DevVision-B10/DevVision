@@ -23,9 +23,3 @@ const router = createBrowserRouter([
   }
 ]);
 export default router;
-
-/**
- * 검색이랑
- * 로그인안했을때 마이페이지가는거 막는거요 ??
- *
- */
