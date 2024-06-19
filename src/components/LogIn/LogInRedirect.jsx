@@ -17,7 +17,6 @@ function LogInRedirect() {
       if (error) throw new Error('세션 획득 실패');
       return data.session.user;
     };
-
     const getUserData = (user) => ({
       userId: user.id,
       email: user.email,
@@ -28,7 +27,7 @@ function LogInRedirect() {
     });
 
     const checkUserExists = async (userId) => {
-      const { data, error } = await supabase.from('Users').select('*').eq('userId', userId);
+      const { data, error } = await supabase.from('Users').select('*').eq('userId', userId).single();
       if (error) return 0;
 
       return data;
