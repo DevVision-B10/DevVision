@@ -10,6 +10,8 @@ import Banner3 from '/src/assets/banner3.png';
 const BannerContainer = styled.div`
   margin-bottom: 20px;
   z-index: 1;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 `;
 
 const BannerImage = styled.img`

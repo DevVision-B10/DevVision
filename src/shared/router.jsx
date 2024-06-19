@@ -1,25 +1,29 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../Layout/Layout';
-import HomePage from '../pages/HomePage/HomePage';
+import HomePage from '../components/HomePage/HomePage';
 import LogInRedirect from '../components/LogIn/LogInRedirect';
 import MyPage from '../pages/HomePage/MyPage/Mypage';
+import VideoPage from '../pages/VideoPage';
 
 const router = createBrowserRouter([
   {
-    path: '/',
     element: <Layout />,
     children: [
       {
-        index: true,
+        path: '/',
         element: <HomePage />
       },
       {
-        path: 'auth/callback',
+        path: '/auth/callback',
         element: <LogInRedirect />
       },
       {
-        path: 'mypage',
+        path: '/mypage',
         element: <MyPage />
+      },
+      {
+        path: '/video/:videoId',
+        element: <VideoPage />
       }
     ]
   }

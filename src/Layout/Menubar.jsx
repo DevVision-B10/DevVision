@@ -22,8 +22,8 @@ const LogoImg = styled.img`
 `;
 
 const IconButton = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   margin-right: 10px;
 `;
