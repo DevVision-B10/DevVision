@@ -3,6 +3,9 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Banner1 from '/src/assets/banner1.png';
+import Banner2 from '/src/assets/banner2.png';
+import Banner3 from '/src/assets/banner3.png';
 
 const BannerContainer = styled.div`
   margin-bottom: 20px;
@@ -26,7 +29,7 @@ const MainBanner = () => {
     autoplaySpeed: 3000
   };
 
-  const images = ['/src/assets/banner1.png', '/src/assets/banner3.png', '/src/assets/banner4.png'];
+  const images = [Banner1, Banner2, Banner3];
 
   return (
     <BannerContainer>
