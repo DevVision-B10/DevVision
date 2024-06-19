@@ -102,6 +102,7 @@ input{
   background-color: var(--sub-color);
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
 }
+
 .back-drop{
 	position: fixed;
 	top: 0;

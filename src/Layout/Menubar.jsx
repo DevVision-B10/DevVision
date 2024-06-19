@@ -18,6 +18,7 @@ const LogoImg = styled.img`
 `;
 function Menubar() {
   const { isVisible, modalOpen } = useModalStore();
+  const navigate = useNavigate();
   const { user } = useLogStore();
   const navigate = useNavigate();
   const handleLogOut = useLogOut();
@@ -42,6 +43,7 @@ function Menubar() {
             로그아웃
           </button>
         </div>
+
       ) : (
         <button className="btn-navy" onClick={() => modalOpen()}>
           로그인
