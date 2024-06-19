@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../assets/logo-icon.png';
-import LogIn from '../components/LogIn/LogIn';
 import useLogOut from '../hooks/useLogOut';
 import useModalStore from '../zustand/modal';
 import useLogStore from '../zustand/user-log';
@@ -17,11 +16,10 @@ const LogoImg = styled.img`
   cursor: pointer;
 `;
 function Menubar() {
-  const { isVisible, modalOpen } = useModalStore();
   const { user } = useLogStore();
   const navigate = useNavigate();
   const handleLogOut = useLogOut();
-
+  const { modalOpen } = useModalStore();
   const handleGoMypage = () => {
     if (user) navigate('/mypage');
     else {
@@ -31,7 +29,6 @@ function Menubar() {
   };
   return (
     <TopMenubar className="d-flex-row">
-      {isVisible && <LogIn />}
       <LogoImg src={Logo} onClick={() => navigate('/')} />
       {user ? (
         <div className="d-flex-row">

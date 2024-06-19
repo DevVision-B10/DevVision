@@ -2,8 +2,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
-import SearchIcon from '../../assets/search-icon.png';
-import SpinnerIcon from '../../assets/spinner-icon.gif';
+import SearchIcon from '../assets/search-icon.png';
+import SpinnerIcon from '../assets/spinner-icon.gif';
 const Footer = styled.div`
   width: 100%;
   text-align: center;
@@ -65,7 +65,7 @@ function HomePage() {
     };
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['videos'],
     queryFn: fetchVideos,
     getNextPageParam: (lastPage) => {
@@ -102,11 +102,25 @@ function HomePage() {
           <SearchBtn src={SearchIcon} alt="search icon" onClick={handleSearch} />
         </form>
       </Search>
-      {filteredData && filteredData.map((pageData) => <p key={pageData.key}>{pageData.title}</p>)}
-      {hasNextPage && (
-        <Footer ref={ref}>
+      {isLoading ? (
+        <Footer>
           <img src={SpinnerIcon} width="50px" />
         </Footer>
+      ) : filteredData?.length > 0 ? (
+        <>
+          {filteredData.map((pageData) => (
+            <p key={pageData.key}>{pageData.title}</p>
+          ))}
+          {hasNextPage && (
+            <Footer ref={ref}>
+              <img src={SpinnerIcon} width="50px" />
+            </Footer>
+          )}
+        </>
+      ) : (
+        <div className="d-flex-column">
+          <h1 className="font-title">데이터가 없습니다</h1>
+        </div>
       )}
     </>
   );

@@ -27,6 +27,8 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	overflow-y: ${(props) => (props.visible ? 'hidden' : 'auto')}
+
 }
 ol, ul {
 	list-style: none;
@@ -111,5 +113,6 @@ input{
   display: flex;
   align-items: center;
   justify-content: center;
+	z-index:5;
 }
 `;
