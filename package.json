@@ -22,6 +22,7 @@
     "react-router-dom": "^6.23.1",
     "react-swiper": "^0.1.5",
     "styled-components": "^6.1.11",
+    "styled-reset": "^4.5.2",
     "uuid": "^10.0.0",
     "zustand": "^4.5.2"
   },
