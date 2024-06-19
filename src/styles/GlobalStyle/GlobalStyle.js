@@ -51,6 +51,15 @@ button{
 	cursor: pointer;
 	padding: 10px;
 }
+input{
+	padding:8px;
+	border-radius: 5px;
+	border : 2px solid var(--grey-color);
+	&:focus {
+    border: 2px solid var(--navy-color);
+    outline: none;
+  }
+}
 .btn-dashed{
 	width: 100%;
 	align-items: center;
@@ -92,5 +101,15 @@ button{
   align-items: center;
   background-color: var(--sub-color);
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+.back-drop{
+	position: fixed;
+	top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 `;

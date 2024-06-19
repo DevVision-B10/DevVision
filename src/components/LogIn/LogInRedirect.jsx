@@ -24,8 +24,8 @@ function LogInRedirect() {
     });
 
     const checkUserExists = async (userId) => {
-      const { data, error } = await supabase.from('Users').select('*').eq('userId', userId).single();
-      if (error) throw new Error('사용자 조회 실패');
+      const { data, error } = await supabase.from('Users').select('*').eq('userId', userId);
+      if (error) return 0;
       return data;
     };
 

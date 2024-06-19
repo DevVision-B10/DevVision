@@ -18,18 +18,30 @@ const LogoImg = styled.img`
 `;
 function Menubar() {
   const { isVisible, modalOpen } = useModalStore();
-  const navigate = useNavigate();
   const { user } = useLogStore();
+  const navigate = useNavigate();
   const handleLogOut = useLogOut();
 
+  const handleGoMypage = () => {
+    if (user) navigate('/mypage');
+    else {
+      alert('로그인이 필요한 서비스입니다!');
+      navigate('*');
+    }
+  };
   return (
     <TopMenubar className="d-flex-row">
       {isVisible && <LogIn />}
       <LogoImg src={Logo} onClick={() => navigate('/')} />
       {user ? (
-        <button className="btn-navy" onClick={handleLogOut}>
-          로그아웃
-        </button>
+        <div className="d-flex-row">
+          <button className="btn-navy" onClick={handleGoMypage}>
+            마이페이지
+          </button>
+          <button className="btn-navy" onClick={handleLogOut}>
+            로그아웃
+          </button>
+        </div>
       ) : (
         <button className="btn-navy" onClick={() => modalOpen()}>
           로그인
