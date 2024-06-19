@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SideBar from './SideBar';
+import WatchSideBar from './WatchSideBar';
 import YouTube from 'react-youtube';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ const VideoSection = () => {
           />
         </VideoContainer>
       </SVContainer>
-      <SideBar />
+      <WatchSideBar />
     </Section>
   );
 };

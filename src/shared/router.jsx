@@ -17,7 +17,8 @@ const router = createBrowserRouter([
       {
         path: '/auth/callback',
         element: <LogInRedirect />
-      },{
+      },
+      {
         path: '/mypage',
         element: <MyPage />
       },
@@ -25,16 +26,19 @@ const router = createBrowserRouter([
         path: '/video/:videoId',
         element: <VideoPage />
       },
-
+      {
         path: '/watchpage',
         element: <WatchPage />
+      },
+      {
         path: '/mypage',
         element: <MyPage />
       },
       {
         path: '/video/:videoId',
         element: <VideoPage />
- {
+      },
+      {
         path: '/watchpage',
         element: <WatchPage />
       }

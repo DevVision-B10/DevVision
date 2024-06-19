@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const SideBar = () => {
+const WatchSideBar = () => {
   const totalCards = 20;
   const initialCards = 6;
   const [visibleCards, setVisibleCards] = useState(initialCards);
@@ -61,4 +61,4 @@ const Span = styled.span`
   font-weight: bold;
 `;
 
-export default SideBar;
+export default WatchSideBar;
