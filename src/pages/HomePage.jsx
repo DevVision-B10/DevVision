@@ -4,6 +4,16 @@ import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 import SearchIcon from '../assets/search-icon.png';
 import SpinnerIcon from '../assets/spinner-icon.gif';
+import CourseCard from '../components/HomePage/CourseCard';
+import useCourses from '../hooks/useCourses';
+const Grid = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+  width: 100%;
+`;
+
 const Footer = styled.div`
   width: 100%;
   text-align: center;
@@ -27,41 +37,21 @@ const itemsPerPage = 5;
 
 function HomePage() {
   const searchRef = useRef(null);
+
   const [searchQuery, setSearchQuery] = useState('');
+  const { courses } = useCourses(searchQuery);
 
   useEffect(() => {
     if (searchRef.current) searchRef.current.focus();
   }, []);
 
   const fetchVideos = async ({ pageParam = 0 }) => {
-    const response = {
-      data: [
-        { key: 0, title: 'dsfsdf' },
-        { key: 1, title: '바보' },
-        { key: 2, title: '바보' },
-        { key: 3, title: '바보' },
-        { key: 4, title: '바보' },
-        { key: 5, title: '바보' },
-        { key: 6, title: '바ㄴㅇㄹㄴㅇㄹ보' },
-        { key: 7, title: '바보' },
-        { key: 8, title: '바보ㄴㅇㄹㄴㅇㄹ' },
-        { key: 9, title: '바보' },
-        { key: 10, title: '바보모ㅓㅇ?' },
-        { key: 11, title: '바보' },
-        { key: 12, title: '바보ㅇㄴㄹㄴㅇ' },
-        { key: 13, title: '바보' },
-        { key: 14, title: '바보' },
-        { key: 15, title: '바ㄴㅇㄹㅇㄴㄹ보' },
-        { key: 16, title: '바보' }
-      ]
-    };
-
     const start = pageParam * itemsPerPage;
     const end = start + itemsPerPage;
     return {
-      data: response.data.slice(start, end),
+      data: courses.slice(start, end),
       nextPage: pageParam + 1,
-      totalCount: response.data.length
+      totalCount: courses.length
     };
   };
 
@@ -107,19 +97,19 @@ function HomePage() {
           <img src={SpinnerIcon} width="50px" />
         </Footer>
       ) : filteredData?.length > 0 ? (
-        <>
-          {filteredData.map((pageData) => (
-            <p key={pageData.key}>{pageData.title}</p>
+        <Grid>
+          {filteredData?.map((pageData) => (
+            <CourseCard key={pageData.id} course={pageData} />
           ))}
           {hasNextPage && (
             <Footer ref={ref}>
               <img src={SpinnerIcon} width="50px" />
             </Footer>
           )}
-        </>
+        </Grid>
       ) : (
         <div className="d-flex-column">
-          <h1 className="font-title">데이터가 없습니다</h1>
+          <h1 className="font-title">해당 결과값에 대한 영상이 없습니다😅</h1>
         </div>
       )}
     </>

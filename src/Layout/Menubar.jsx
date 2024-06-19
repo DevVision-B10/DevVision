@@ -10,11 +10,15 @@ const TopMenubar = styled.div`
   padding: 15px;
   justify-content: space-between;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  display: flex;
+  align-items: center;
 `;
+
 const LogoImg = styled.img`
-  width: 50px;
+  width: 100px;
   cursor: pointer;
 `;
+
 function Menubar() {
   const { user } = useLogStore();
   const navigate = useNavigate();

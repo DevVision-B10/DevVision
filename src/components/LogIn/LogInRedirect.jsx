@@ -29,7 +29,6 @@ function LogInRedirect() {
     const checkUserExists = async (userId) => {
       const { data, error } = await supabase.from('Users').select('*').eq('userId', userId).single();
       if (error) return 0;
-
       return data;
     };
 

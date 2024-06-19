@@ -4,6 +4,7 @@ import { GlobalStyle } from '../styles/GlobalStyle/GlobalStyle';
 import '../styles/color.css';
 import useModalStore from '../zustand/modal';
 import Menubar from './Menubar';
+
 function Layout() {
   const { isVisible } = useModalStore();
   return (
