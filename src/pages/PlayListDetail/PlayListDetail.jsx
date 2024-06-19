@@ -31,12 +31,20 @@ import {
   TeacherName,
   Title,
   UserEmail
-} from './DetailStyle';
+} from './PlayListDetailStyle';
 
 import { useQuery } from '@tanstack/react-query';
-import { fetchApi } from '../../api/api';
+import { fetchApi } from '../../api/playlistApi';
+import { useParams } from 'react-router-dom';
+
+// 1. 코딩애플 유튜브 id
+// 2. id를 이용해서 관련 목록을 가지고 올 방법이 있는지 찾아보는 것
+// PLfLgtT94nNq0qTRunX9OEmUzQv4lI4pnP -> 코딩애플 유튜브 채널 id -> 재생목록 리스트 [{}, {}, ...] ->
 
 const Detail = () => {
+  const { id } = useParams();
+  // console.log(params.id);
+  // const params = { id: 'PLfLgtT94nNq0qTRunX9OEmUzQv4lI4pnP' };
   const [commentsInfo, setCommentsInfo] = useState([]);
   const [comments, setComments] = useState('');
   const [dropdownStates, setDropdownStates] = useState({});
@@ -46,10 +54,10 @@ const Detail = () => {
       const { data: Comments, error } = await supabase.from('Comments').select('*');
       if (error) {
         console.error(error);
+        alert('supabase에서 데이터를 가져오는 중 오류가 발생했습니다.');
         return;
       }
       setCommentsInfo(Comments);
-      console.log('Comments', Comments);
     };
     fetchComments();
   }, []);
@@ -59,17 +67,9 @@ const Detail = () => {
     isLoading,
     error
   } = useQuery({
-    queryKey: ['test'],
-    queryFn: fetchApi
+    queryKey: ['test', id],
+    queryFn: () => fetchApi(id)
   });
-
-  if (isLoading) return <div>loading...</div>;
-
-  if (error) return <div>데이터 로드 중 오류가 발생했습니다.</div>;
-  console.log('playlist => ', playlist);
-
-  if (!playlist || playlist.length === 0) return <div>유효한 데이터가 없습니다.</div>;
-  console.log('playlist[0].snippet => ', playlist[0].snippet);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,6 +111,7 @@ const Detail = () => {
     const { error } = await supabase.from('Comments').update({ content: comments }).eq('commentId', commentIdToUpdate);
     if (error) {
       console.error('댓글 수정 중 오류 발생:', error);
+      alert('댓글 수정 중 오류가 발생했습니다.');
       return;
     } else {
       alert('댓글이 수정되었습니다!');
@@ -144,6 +145,12 @@ const Detail = () => {
       [commentId]: !prevStates[commentId]
     }));
   };
+
+  if (isLoading) return <div>loading...</div>;
+
+  if (error) return <div>데이터 로드 중 오류가 발생했습니다.</div>;
+
+  if (!playlist || playlist.length === 0) return <div>유효한 데이터가 없습니다.</div>;
 
   return (
     <Container>
@@ -191,8 +198,8 @@ const Detail = () => {
               </CommentHeader>
               <StContent>{comment.content}</StContent>
               <DropdownMenu $isopen={dropdownStates[comment.commentId]}>
-                <DropdownItem onClick={() => handleUpdate(comment.commentId)}>수정</DropdownItem>
-                <DropdownItem onClick={() => handleDelete(comment.commentId)}>삭제</DropdownItem>
+                <DropdownItem onClick={() => handleUpdate(comment.commentId)}>수정하기</DropdownItem>
+                <DropdownItem onClick={() => handleDelete(comment.commentId)}>삭제하기</DropdownItem>
               </DropdownMenu>
             </CommentsSection>
           ))}

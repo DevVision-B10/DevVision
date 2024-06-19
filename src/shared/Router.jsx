@@ -2,7 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import HomePage from '../components/HomePage/HomePage';
 import LogInRedirect from '../components/LogIn/LogInRedirect';
-import Detail from '../pages/Detail/Detail';
+import PlayListDetail from '../pages/PlayListDetail/PlayListDetail';
+
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -16,8 +17,8 @@ const router = createBrowserRouter([
         element: <LogInRedirect />
       },
       {
-        path: '/detail',
-        element: <Detail />
+        path: '/playlist/:id',
+        element: <PlayListDetail />
       }
     ]
   }
