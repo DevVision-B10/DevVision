@@ -43,10 +43,11 @@ function LogInRedirect() {
       try {
         const user = await getSession();
         const userData = getUserData(user);
-        const existingUser = await checkUserExists(userData.userId);
+        // const existingUser = await checkUserExists(userData.userId);
 
-        if (!existingUser) await insertUser(userData);
-        else await updateUser(userData);
+        // if (!existingUser) await insertUser(userData);
+        // else
+        await updateUser(userData);
 
         logIn(user);
         navigate('/');

@@ -5,7 +5,7 @@ import router from './shared/router';
 function App() {
   return (
     <QueryProvider>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </QueryProvider>
   );
 }

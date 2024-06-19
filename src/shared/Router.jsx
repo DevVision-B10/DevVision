@@ -3,6 +3,7 @@ import Layout from '../Layout/Layout';
 import HomePage from '../components/HomePage/HomePage';
 import LogInRedirect from '../components/LogIn/LogInRedirect';
 import PlayListDetail from '../pages/PlayListDetail/PlayListDetail';
+import MyPage from '../pages/HomePage/MyPage/Mypage';
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,13 @@ const router = createBrowserRouter([
       {
         path: '/playlist/:id',
         element: <PlayListDetail />
+      },
+      {
+        path: '/mypage',
+        element: <MyPage />
       }
     ]
   }
 ]);
+
 export default router;
