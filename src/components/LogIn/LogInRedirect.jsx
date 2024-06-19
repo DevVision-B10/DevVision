@@ -42,9 +42,7 @@ function LogInRedirect() {
     const handleAuthCallback = async () => {
       try {
         const user = await getSession();
-
         const userData = getUserData(user);
-
         const existingUser = await checkUserExists(userData.userId);
 
         if (!existingUser) await insertUser(userData);
