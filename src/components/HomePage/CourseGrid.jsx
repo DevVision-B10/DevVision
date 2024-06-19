@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import useCourses from '../../hooks/useCourses';
 import CourseCard from './CourseCard';
@@ -37,7 +36,7 @@ const CourseGrid = ({ searchQuery }) => {
         {filteredCourses.length === 0 ? (
           <div>해당 결과값에 대한 영상이 없습니다😅</div>
         ) : (
-          filteredCourses.map((course) => <CourseCard key={course.id} course={course} />)
+          filteredCourses?.map((course) => <CourseCard key={course.id} course={course} />)
         )}
       </Grid>
     </GridContainer>
