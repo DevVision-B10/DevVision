@@ -2,46 +2,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useLoaderData } from 'react-router-dom';
-import styled from 'styled-components';
-import SearchIcon from '../assets/search-icon.png';
-import SpinnerIcon from '../assets/spinner-icon.gif';
-import UpIcon from '../assets/up-icon.png';
-import CourseCard from '../components/HomePage/CourseCard';
-import MainBanner from '../components/HomePage/MainBanner';
-const HighBtn = styled.button`
-  position: fixed;
-  bottom: 5px;
-  right: 5px;
-  border: none;
-  border-radius: 40px;
-  background-color: var(--yellow-color);
-  padding: 5px;
-`;
-const Grid = styled.div`
-  max-width: 1200px;
-  margin: auto;
-  justify-content: center;
-  flex-wrap: wrap;
-`;
-const Footer = styled.div`
-  width: 100%;
-  text-align: center;
-`;
-const Search = styled.div`
-  position: relative;
-  max-width: 400px;
-  margin: 40px auto 20px auto;
-  text-align: center;
-`;
-const SearchBtn = styled.img`
-  position: absolute;
-  cursor: pointer;
-  top: 5px;
-  right: 20px;
-`;
-const SearchInput = styled.input`
-  width: 90%;
-`;
+import SearchIcon from '../../assets/search-icon.png';
+import SpinnerIcon from '../../assets/spinner-icon.gif';
+import UpIcon from '../../assets/up-icon.png';
+import CourseCard from '../../components/HomePage/CourseCard';
+import MainBanner from '../../components/HomePage/MainBanner';
+import { Footer, Grid, HighBtn, Search, SearchBtn, SearchInput } from './HomePageStyle';
+
 const itemsPerPage = 8;
 
 function HomePage() {

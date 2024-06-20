@@ -1,10 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import SadIcon from '../assets/sad-icon.png';
-const Container = styled.div`
-  background-color: var(--white-color);
-  text-align: center;
-`;
+import SadIcon from '../../assets/sad-icon.png';
+import { Container } from './UnknownPageStyle';
 
 function UnknownPage() {
   const navigate = useNavigate();

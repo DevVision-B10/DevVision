@@ -1,9 +1,6 @@
-import styled from 'styled-components';
 import useModalStore from '../../zustand/modal';
+import { BackDrop } from './BackModalStyle';
 
-const BackDrop = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
-`;
 function BackModal({ children }) {
   const { modalClose } = useModalStore();
   return (

@@ -1,12 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import supabase from '../../supabase/config';
 import useLogStore from '../../zustand/user-log';
-const Container = styled.div`
-  background-color: var(--white-color);
-  text-align: center;
-`;
+import { Container } from './LoginRedirectStyle';
+
 function LogInRedirect() {
   const navigate = useNavigate();
   const { logIn } = useLogStore();

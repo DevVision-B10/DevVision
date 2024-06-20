@@ -37,9 +37,32 @@ export const signInOAuth = async (logInType) => {
 };
 
 export const signOut = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    alert('로그아웃에 실패하였습니다!');
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      alert('로그아웃에 실패하였습니다!');
+      return;
+    }
+
     return;
+  } catch (err) {
+    console.error(err);
+    alert('오류가 발생했습니다.');
+  }
+};
+
+export const updateInsertUserData = async (data) => {
+  try {
+    const { error } = await supabase.from('Users').upsert(data, { onConflict: ['email'] });
+
+    if (error) {
+      console.error(error);
+      alert('오류가 발생했습니다.');
+    }
+
+    return;
+  } catch (err) {
+    console.error(err);
+    alert('오류가 발생했습니다.');
   }
 };
