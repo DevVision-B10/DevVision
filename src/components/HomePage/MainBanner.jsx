@@ -1,7 +1,7 @@
 import Slider from 'react-slick';
-import styled from 'styled-components';
-import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+import styled from 'styled-components';
 import Banner1 from '/src/assets/banner1.png';
 import Banner2 from '/src/assets/banner2.png';
 import Banner3 from '/src/assets/banner3.png';
@@ -19,6 +19,8 @@ const BannerImage = styled.img`
   object-fit: cover;
 `;
 
+const images = [Banner1, Banner2, Banner3];
+
 const MainBanner = () => {
   const settings = {
     dots: true,
@@ -29,8 +31,6 @@ const MainBanner = () => {
     autoplay: true,
     autoplaySpeed: 3000
   };
-
-  const images = [Banner1, Banner2, Banner3];
 
   return (
     <BannerContainer>

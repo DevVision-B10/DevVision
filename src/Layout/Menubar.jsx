@@ -1,17 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Logo from '../assets/logo2.png';
-import MypageIcon from '../assets/mypage_icon.png';
-import LogIn from '../components/LogIn/LogIn';
+import Logo from '../assets/logo-icon.png';
 import useLogOut from '../hooks/useLogOut';
 import useModalStore from '../zustand/modal';
 import useLogStore from '../zustand/user-log';
-
-const TopMenubar = styled.div`
+const BgMenubar = styled.div`
   background-color: var(--sub-color);
-  padding: 15px;
-  justify-content: space-between;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+`;
+const TopMenubar = styled.div`
+  max-width: 1200px;
+  margin: auto;
+  justify-content: space-between;
   display: flex;
   align-items: center;
 `;
@@ -21,41 +21,38 @@ const LogoImg = styled.img`
   cursor: pointer;
 `;
 
-const IconButton = styled.img`
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  margin-right: 10px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 function Menubar() {
-  const { isVisible, modalOpen } = useModalStore();
-  const navigate = useNavigate();
   const { user } = useLogStore();
+  const navigate = useNavigate();
   const handleLogOut = useLogOut();
-
+  const { modalOpen } = useModalStore();
+  const handleGoMypage = () => {
+    if (user) navigate('/mypage');
+    else {
+      alert('로그인이 필요한 서비스입니다!');
+      navigate('*');
+    }
+  };
   return (
-    <TopMenubar className="d-flex-row">
-      {isVisible && <LogIn />}
-      <LogoImg src={Logo} onClick={() => navigate('/')} />
-      <ButtonContainer>
-        <IconButton src={MypageIcon} onClick={() => navigate('/mypage')} />
+    <BgMenubar>
+      <TopMenubar className="d-flex-row">
+        <LogoImg src={Logo} onClick={() => navigate('/')} />
         {user ? (
-          <button className="btn-navy" onClick={handleLogOut}>
-            로그아웃
-          </button>
+          <div className="d-flex-row">
+            <button className="btn-navy" onClick={handleGoMypage}>
+              마이페이지
+            </button>
+            <button className="btn-navy" onClick={handleLogOut}>
+              로그아웃
+            </button>
+          </div>
         ) : (
           <button className="btn-navy" onClick={() => modalOpen()}>
             로그인
           </button>
         )}
-      </ButtonContainer>
-    </TopMenubar>
+      </TopMenubar>
+    </BgMenubar>
   );
 }
 
