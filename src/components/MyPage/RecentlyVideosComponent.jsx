@@ -62,7 +62,7 @@ function RecentlyVideosComponent({ user }) {
   if (isError) return <div>Error: {isError.message}</div>;
 
   const handleOnClickCard = (videoId) => {
-    navigate(`/detail/${videoId}`);
+    navigate(`/watch/${videoId}`);
   };
 
   return (
