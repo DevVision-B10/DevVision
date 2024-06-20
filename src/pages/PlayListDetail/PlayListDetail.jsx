@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import supabase from '../../supabase/config';
 import { v4 as uuidv4 } from 'uuid';
 import playBtn from '../../assets/playBtn.png';
-
 import {
   CommentForm,
   CommentFormContainer,
@@ -22,12 +21,14 @@ import {
   TeacherName,
   Title
 } from './PlayListDetailStyle';
-
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaylist } from '../../api/playlistApi';
 import { useParams } from 'react-router-dom';
 import useLogStore from '../../zustand/user-log';
 import { EditComment } from '../../components/EditComment/EditComment';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 const Detail = () => {
   const { id } = useParams();
@@ -35,6 +36,8 @@ const Detail = () => {
   const [comments, setComments] = useState('');
   const [dropdownStates, setDropdownStates] = useState({});
   const { user } = useLogStore();
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -62,6 +65,8 @@ const Detail = () => {
     e.preventDefault();
 
     if (!comments.trim()) return alert('댓글 내용을 입력해주세요');
+    if (!user) return alert('로그인을 해주세요.');
+    const date = dayjs().tz(dayjs.tz.guess()).format('YYYY-MM-DD HH:mm:ss');
 
     try {
       const { data, error } = await supabase
@@ -71,7 +76,8 @@ const Detail = () => {
           userId: user.id,
           playlistId: id,
           content: comments,
-          createdAt: new Date().toISOString()
+          createdAt: date,
+          email: user.email
         })
         .select('*');
 
@@ -87,6 +93,8 @@ const Detail = () => {
       console.error('오류 발생:', err);
       alert('오류가 발생했습니다.');
     }
+
+    alert('댓글 작성이 완료됐습니다!');
   };
 
   const activeEnter = (e) => {
@@ -96,6 +104,7 @@ const Detail = () => {
   };
 
   const handleUpdate = async (commentIdToUpdate, comments) => {
+    if (!user) return alert('로그인을 해주세요.');
     const { error } = await supabase.from('Comments').update({ content: comments }).eq('commentId', commentIdToUpdate);
     if (error) {
       console.error('댓글 수정 중 오류 발생:', error);
@@ -113,6 +122,7 @@ const Detail = () => {
   };
 
   const handleDelete = async (commentIdToDelete) => {
+    if (!user) return alert('로그인을 해주세요.');
     const confirmed = confirm('정말로 댓글을 삭제하시겠습니까?');
     if (confirmed) {
       const { error } = await supabase.from('Comments').delete().eq('commentId', commentIdToDelete).select();

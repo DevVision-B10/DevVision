@@ -14,30 +14,39 @@ import {
   UserEmail
 } from '../../components/EditComment/EditCommentStyle';
 import threeDots from '../../assets/ellipsis-menu-icon.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const EditComment = ({ comment, toggleDropdown, handleUpdate, handleDelete, dropdownStates }) => {
   const [inputValue, setInputValue] = useState(comment.content);
   const [isEditing, setIsEditing] = useState(false);
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
-  const changeToEditMode = () => {
-    setIsEditing(true);
-  };
+  useEffect(() => {
+    if (dropdownStates[comment.commentId] && isEditing === false) {
+      setIsOpenDropdown(true);
+    } else {
+      setIsOpenDropdown(false);
+    }
+  }, [dropdownStates[comment.commentId], isEditing]);
 
-  const cancelEditMode = () => {
-    setIsEditing(false);
+  const handleEditMode = () => {
+    setIsEditing(!isEditing);
   };
 
   const onChangeHandler = (e) => {
     setInputValue(e.target.value);
   };
+
+  const formatCreatedAt = (createdAt) => {
+    return createdAt.replace('T', ' ');
+  };
+
   return (
     <CommentsSection key={comment.commentId}>
       <CommentHeader>
-        {/* userId 대신 user.email */}
-        <UserEmail>{comment.userId}</UserEmail>
+        <UserEmail>{comment.email}</UserEmail>
         <StMenuWrap>
-          <CreatedAt>({comment.createdAt.slice(0, 10)})</CreatedAt>
+          <CreatedAt>{formatCreatedAt(comment.createdAt)}</CreatedAt>
           <MenuButton onClick={() => toggleDropdown(comment.commentId)}>
             <MenuImg src={threeDots} alt="Menu" />
           </MenuButton>
@@ -55,15 +64,15 @@ export const EditComment = ({ comment, toggleDropdown, handleUpdate, handleDelet
             >
               완료
             </StEditModeBtn>
-            <StEditModeBtn onClick={cancelEditMode}>취소</StEditModeBtn>
+            <StEditModeBtn onClick={handleEditMode}>취소</StEditModeBtn>
           </BtnWrap>
         </>
       ) : (
         <StContent>{comment.content}</StContent>
       )}
 
-      <DropdownMenu $isopen={dropdownStates[comment.commentId]}>
-        <DropdownItem onClick={changeToEditMode}>수정하기</DropdownItem>
+      <DropdownMenu $isopen={isOpenDropdown}>
+        <DropdownItem onClick={handleEditMode}>수정하기</DropdownItem>
         <DropdownItem onClick={() => handleDelete(comment.commentId)}>삭제하기</DropdownItem>
       </DropdownMenu>
     </CommentsSection>
