@@ -51,7 +51,7 @@ function HomePage() {
 
   useEffect(() => {
     if (searchRef.current) searchRef.current.focus();
-  }, []);
+  }, [courses]);
 
   const fetchVideos = async ({ pageParam = 0 }) => {
     const start = pageParam * itemsPerPage;
