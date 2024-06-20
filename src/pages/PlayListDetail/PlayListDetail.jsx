@@ -128,7 +128,7 @@ const Detail = () => {
     <Container className="d-flex-column">
       <h1 className="font-bigTitle">{playlist[0].snippet.title}</h1>
       <h2>{playlist[0].snippet.channelTitle}</h2>
-      <img src={playlist[0].snippet.thumbnails.standard.url} alt="React 강의" />
+      <img src={playlist[0].snippet.thumbnails.standard?.url} alt="React 강의" />
       <Details>{playlist[0].snippet.description}</Details>
 
       <CourseList>
