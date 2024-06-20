@@ -26,7 +26,6 @@ const VideoPage = () => {
 
   if (error) return '데이터 로드 중 오류 발생';
 
-  console.log(video);
   return (
     <VideoContainer>
       <VideoTitleWrapper>
