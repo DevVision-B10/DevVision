@@ -15,8 +15,8 @@ const Card = styled.div`
 
   &:hover {
     box-shadow:
-      0 10px 15px rgba(0, 0, 0, 0.1),
-      0 4px 6px rgba(0, 0, 0, 0.08);
+      0 10px 15px rgba(0, 0, 0, 0.4),
+      0 4px 6px rgba(0, 0, 0, 0.24);
   }
 `;
 
@@ -37,7 +37,7 @@ const CourseTitle = styled.h3`
   font-size: 19px;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
