@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Card = styled.div`
-  padding: 16px;
+  width: 24%;
+  cursor: pointer;
+  padding: 10px;
   border-radius: 8px;
   text-align: left;
   box-shadow:
@@ -55,17 +57,16 @@ const ChannelTitle = styled.p`
 `;
 
 const CourseCard = ({ course }) => {
+  const navigate = useNavigate();
   return (
-    <Link to={`/playlist/${course.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-      <Card>
-        <CourseImage src={course.image} alt={course.title} />
-        <CourseTitleContainer>
-          <ChannelThumbnail src={course.channelThumbnail} alt={course.channelTitle} />
-          <CourseTitle>{course.title}</CourseTitle>
-        </CourseTitleContainer>
-        <ChannelTitle>{course.channelTitle}</ChannelTitle>
-      </Card>
-    </Link>
+    <Card onClick={() => navigate(`/playlist/${course.id}`)}>
+      <CourseImage src={course.image} alt={course.title} />
+      <CourseTitleContainer>
+        <ChannelThumbnail src={course.channelThumbnail} alt={course.channelTitle} />
+        <CourseTitle>{course.title}</CourseTitle>
+      </CourseTitleContainer>
+      <ChannelTitle>{course.channelTitle}</ChannelTitle>
+    </Card>
   );
 };
 

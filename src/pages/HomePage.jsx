@@ -1,20 +1,19 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchIcon from '../assets/search-icon.png';
 import SpinnerIcon from '../assets/spinner-icon.gif';
 import CourseCard from '../components/HomePage/CourseCard';
 import MainBanner from '../components/HomePage/MainBanner';
-import useCourses from '../hooks/useCourses';
-const Grid = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 15px;
-  width: 100%;
-`;
 
+const Grid = styled.div`
+  max-width: 1200px;
+  margin: auto;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
 const Footer = styled.div`
   width: 100%;
   text-align: center;
@@ -22,7 +21,7 @@ const Footer = styled.div`
 const Search = styled.div`
   position: relative;
   max-width: 400px;
-  margin: auto;
+  margin: 40px auto 20px auto;
   text-align: center;
 `;
 const SearchBtn = styled.img`
@@ -34,13 +33,13 @@ const SearchBtn = styled.img`
 const SearchInput = styled.input`
   width: 90%;
 `;
-const itemsPerPage = 5;
+const itemsPerPage = 4;
 
 function HomePage() {
   const searchRef = useRef(null);
-
+  const courses = useLoaderData();
   const [searchQuery, setSearchQuery] = useState('');
-  const fetchCourses = useCourses();
+
   useEffect(() => {
     if (searchRef.current) searchRef.current.focus();
   }, []);
@@ -49,14 +48,14 @@ function HomePage() {
     const start = pageParam * itemsPerPage;
     const end = start + itemsPerPage;
     return {
-      data: fetchCourses.slice(start, end),
+      data: courses.slice(start, end),
       nextPage: pageParam + 1,
-      totalCount: fetchCourses.length
+      totalCount: courses.length
     };
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ['videos'],
+    queryKey: ['videos', searchQuery],
     queryFn: fetchVideos,
     getNextPageParam: (lastPage) => {
       const { nextPage, totalCount } = lastPage;
@@ -67,7 +66,7 @@ function HomePage() {
   });
 
   const { ref } = useInView({
-    threshold: 1,
+    threshold: 0.9,
     onChange: (inView) => {
       if (inView && hasNextPage && !isFetchingNextPage) {
         fetchNextPage();
@@ -85,7 +84,7 @@ function HomePage() {
   );
 
   return (
-    <>
+    <div>
       <MainBanner />
       <Search>
         <form onSubmit={handleSearch}>
@@ -98,7 +97,7 @@ function HomePage() {
           <img src={SpinnerIcon} width="50px" />
         </Footer>
       ) : filteredData?.length > 0 ? (
-        <Grid>
+        <Grid className="d-flex-row">
           {filteredData?.map((pageData) => (
             <CourseCard key={pageData.id} course={pageData} />
           ))}
@@ -113,7 +112,7 @@ function HomePage() {
           <h1 className="font-title">해당 결과값에 대한 영상이 없습니다😅</h1>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

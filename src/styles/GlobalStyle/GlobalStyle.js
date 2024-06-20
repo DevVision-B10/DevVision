@@ -4,8 +4,8 @@ import reset from 'styled-reset';
 export const GlobalStyle = createGlobalStyle`
   ${reset}
 body {
-	overflow-y: ${(props) => (props.visible ? 'hidden' : 'auto')}
-
+	overflow-y: ${(props) => (props.visible ? 'hidden' : 'auto')};
+  overflow-x: hidden;
 }
 div{
 	box-sizing: border-box;
