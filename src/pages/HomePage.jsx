@@ -5,9 +5,18 @@ import { useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchIcon from '../assets/search-icon.png';
 import SpinnerIcon from '../assets/spinner-icon.gif';
+import UpIcon from '../assets/up-icon.png';
 import CourseCard from '../components/HomePage/CourseCard';
 import MainBanner from '../components/HomePage/MainBanner';
-
+const HighBtn = styled.button`
+  position: fixed;
+  bottom: 70px;
+  right: 70px;
+  border: none;
+  border-radius: 40px;
+  background-color: var(--yellow-color);
+  padding: 5px;
+`;
 const Grid = styled.div`
   max-width: 1200px;
   margin: auto;
@@ -83,12 +92,15 @@ function HomePage() {
     page.data.filter((item) => item.title.toLowerCase().includes(searchQuery))
   );
 
+  const handleSetHeight = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
     <div>
       <MainBanner />
       <Search>
         <form onSubmit={handleSearch}>
-          <SearchInput placeholder="Search..." ref={searchRef} required />
+          <SearchInput placeholder="Search..." ref={searchRef} />
           <SearchBtn src={SearchIcon} alt="search icon" onClick={handleSearch} />
         </form>
       </Search>
@@ -112,6 +124,10 @@ function HomePage() {
           <h1 className="font-title">해당 결과값에 대한 영상이 없습니다😅</h1>
         </div>
       )}
+
+      <HighBtn onClick={handleSetHeight}>
+        <img src={UpIcon} width="50px" />
+      </HighBtn>
     </div>
   );
 }
