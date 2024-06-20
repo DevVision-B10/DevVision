@@ -4,6 +4,7 @@ import SideBar from '../../layouts/SideBar';
 import useLogStore from '../../zustand/user-log';
 function MyPage() {
   const user = useLogStore((state) => state.user);
+
   const [displayComponent, setDisplayComponent] = useState('recentVideos');
 
   const handleOnClickSideBarCategory = (component) => {

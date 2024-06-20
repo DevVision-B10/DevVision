@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import supabase from '../supabase/config';
+import { signOut } from '../api/supabase/user.api';
 import useLogStore from '../zustand/user-log';
 
 const useLogOut = () => {
@@ -19,11 +18,7 @@ const useLogOut = () => {
       setIsThrottled(false);
     }, 3000);
 
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      alert('로그아웃에 실패하였습니다!');
-      return;
-    }
+    await signOut();
     alert('로그아웃 되었습니다');
     logOut();
     navigate('/');

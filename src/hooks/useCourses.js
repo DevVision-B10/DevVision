@@ -8,6 +8,8 @@ const fetchChannelThumbnail = async (channelId) => {
   }
 
   try {
+    // TODO: 너 옮겨
+
     const response = await api.get('/channels', {
       params: {
         part: 'snippet',
@@ -31,6 +33,7 @@ const useCourses = async ({ searchQuery }) => {
   }
 
   try {
+    // TODO : 주석친구들 모두 옮겨
     // const response = await api.get('/search', {
     //   params: {
     //     part: 'snippet',

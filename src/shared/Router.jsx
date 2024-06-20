@@ -11,6 +11,12 @@ import useCourses from '../hooks/useCourses';
 import HomePage from '../pages/HomePage';
 
 import UnknownPage from '../pages/UnknownPage';
+import useLogStore from '../zustand/user-log';
+
+const ProtectRoute = ({ element }) => {
+  const user = useLogStore((state) => state.user);
+  return user ? element : <UnknownPage />;
+};
 
 const router = createBrowserRouter([
   {
@@ -39,7 +45,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/mypage',
-        element: <MyPage />
+        element: <ProtectRoute element={<MyPage />} />
       },
       {
         path: '*',
