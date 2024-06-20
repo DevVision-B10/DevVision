@@ -61,6 +61,8 @@ function TestPage() {
 
   if (isLoading) return 'loading';
 
+  console.log(test);
+
   return (
     <div>
       {test.data.items.map((item) => (
