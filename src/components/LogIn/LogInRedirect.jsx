@@ -1,8 +1,12 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import supabase from '../../supabase/config';
 import useLogStore from '../../zustand/user-log';
-
+const Container = styled.div`
+  background-color: var(--white-color);
+  text-align: center;
+`;
 function LogInRedirect() {
   const navigate = useNavigate();
   const { logIn } = useLogStore();
@@ -13,7 +17,6 @@ function LogInRedirect() {
       if (error) throw new Error('세션 획득 실패');
       return data.session.user;
     };
-
     const getUserData = (user) => ({
       userId: user.id,
       email: user.email,
@@ -60,7 +63,11 @@ function LogInRedirect() {
     handleAuthCallback();
   }, [logIn, navigate]);
 
-  return <div>로딩중입니다...</div>;
+  return (
+    <Container className="back-drop d-flex-column">
+      <h1 className="font-title">로딩중입니다...</h1>
+    </Container>
+  );
 }
 
 export default LogInRedirect;
