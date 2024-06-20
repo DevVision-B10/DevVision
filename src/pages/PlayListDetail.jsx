@@ -1,46 +1,26 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import threeDots from '../assets/ellipsis-menu-icon.png';
 import playBtn from '../assets/playBtn.png';
 import supabase from '../supabase/config';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { fetchApi } from '../api/playlistApi';
+import { fetchPlaylist } from '../api/playlistApi';
+import { EditComment } from '../components/EditComment/EditComment';
 import useLogStore from '../zustand/user-log';
-
 // 1. 코딩애플 유튜브 id
 // 2. id를 이용해서 관련 목록을 가지고 올 방법이 있는지 찾아보는 것
 // PLfLgtT94nNq0qTRunX9OEmUzQv4lI4pnP -> 코딩애플 유튜브 채널 id -> 재생목록 리스트 [{}, {}, ...] ->
-const Img = styled.img`
-  cursor: pointer;
-`;
+
 const Container = styled.div`
   max-width: 700px;
   margin: auto;
 `;
-const DropdownMenu = styled.ul`
-  position: absolute;
-  top: 35px;
-  right: 0;
-  background-color: var(--white-color);
-  box-shadow: 0 2px 10px var(--black-color);
-  border-radius: 10px;
-  padding: 5px 0px;
-  display: ${({ $isopen }) => ($isopen ? 'block' : 'none')};
-`;
 
-const DropdownItem = styled.li`
-  cursor: pointer;
-  list-style-type: none;
-  background: none;
-  padding: 10px;
-  text-align: left;
-  &:hover {
-    background-color: var(--button-hover-color);
-  }
-`;
 const CourseList = styled.section`
   width: 100%;
   margin: 10px auto;
@@ -48,15 +28,7 @@ const CourseList = styled.section`
   border-top: 2px solid var(--lime-color);
   border-bottom: 2px solid var(--lime-color);
 `;
-const CommentHeader = styled.div`
-  background-color: var(--yellow-color);
-  justify-content: space-between;
-  line-height: 30px;
-  padding-left: 15px;
-  padding-right: 15px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-`;
+
 const Details = styled.div`
   width: 100%;
   height: auto;
@@ -66,28 +38,19 @@ const Details = styled.div`
   text-overflow: ellipsis;
 `;
 
-const CommentsSection = styled.section`
-  border: 1px solid #f1f6f6;
-  border-radius: 10px;
-  position: relative;
-`;
-
-const StContent = styled.p`
-  min-height: 60px;
-  padding: 10px 5px;
-  font-size: 15px;
-  line-height: 25px;
-`;
 const Detail = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [commentsInfo, setCommentsInfo] = useState([]);
   const [comments, setComments] = useState('');
   const [dropdownStates, setDropdownStates] = useState({});
   const { user } = useLogStore();
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
 
   useEffect(() => {
     const fetchComments = async () => {
-      const { data: Comments, error } = await supabase.from('Comments').select('*');
+      const { data: Comments, error } = await supabase.from('Comments').select('*').eq('playlistId', id);
       if (error) {
         console.error(error);
         alert('supabase에서 데이터를 가져오는 중 오류가 발생했습니다.');
@@ -96,21 +59,23 @@ const Detail = () => {
       setCommentsInfo(Comments);
     };
     fetchComments();
-  }, []);
+  }, [id]);
 
   const {
     data: playlist,
     isLoading,
     error
   } = useQuery({
-    queryKey: ['test', id],
-    queryFn: () => fetchApi(id)
+    queryKey: ['playlist', id],
+    queryFn: () => fetchPlaylist(id)
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!comments.trim()) return alert('댓글 내용을 입력해주세요');
+    if (!user) return alert('로그인을 해주세요.');
+    const date = dayjs().tz(dayjs.tz.guess()).format('YYYY-MM-DD HH:mm:ss');
 
     try {
       const { data, error } = await supabase
@@ -120,7 +85,8 @@ const Detail = () => {
           userId: user.id,
           playlistId: id,
           content: comments,
-          createdAt: new Date().toISOString()
+          createdAt: date,
+          email: user.email
         })
         .select('*');
 
@@ -136,9 +102,18 @@ const Detail = () => {
       console.error('오류 발생:', err);
       alert('오류가 발생했습니다.');
     }
+
+    alert('댓글 작성이 완료됐습니다!');
   };
 
-  const handleUpdate = async (commentIdToUpdate) => {
+  const activeEnter = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
+  const handleUpdate = async (commentIdToUpdate, comments) => {
+    if (!user) return alert('로그인을 해주세요.');
     const { error } = await supabase.from('Comments').update({ content: comments }).eq('commentId', commentIdToUpdate);
     if (error) {
       console.error('댓글 수정 중 오류 발생:', error);
@@ -156,6 +131,7 @@ const Detail = () => {
   };
 
   const handleDelete = async (commentIdToDelete) => {
+    if (!user) return alert('로그인을 해주세요.');
     const confirmed = confirm('정말로 댓글을 삭제하시겠습니까?');
     if (confirmed) {
       const { error } = await supabase.from('Comments').delete().eq('commentId', commentIdToDelete).select();
@@ -196,7 +172,11 @@ const Detail = () => {
 
       <ul className="d-flex-column">
         {playlist.map((item) => (
-          <li className="d-flex-row border-box" key={item.id}>
+          <li
+            className="d-flex-row border-box"
+            key={item.id}
+            onClick={() => navigate(`/watch/${item.snippet.resourceId.videoId}`)}
+          >
             <img src={playBtn} alt="플레이어 버튼" height="18px" />
             <span>{item.snippet.title}</span>
           </li>
@@ -210,22 +190,14 @@ const Detail = () => {
       <div className="d-flex-column">
         {commentsInfo &&
           commentsInfo.map((comment) => (
-            <CommentsSection key={comment.commentId}>
-              <CommentHeader className="d-flex-row">
-                {/* userId 대신 user.email */}
-                <h3 className="font-strong">{comment.userId}</h3>
-                <div className="d-flex-row">
-                  <span className="font-small">({comment.createdAt.slice(0, 10)})</span>
-
-                  <Img src={threeDots} alt="Menu" height="24px" onClick={() => toggleDropdown(comment.commentId)} />
-                </div>
-              </CommentHeader>
-              <StContent>{comment.content}</StContent>
-              <DropdownMenu $isopen={dropdownStates[comment.commentId]}>
-                <DropdownItem onClick={() => handleUpdate(comment.commentId)}>수정하기</DropdownItem>
-                <DropdownItem onClick={() => handleDelete(comment.commentId)}>삭제하기</DropdownItem>
-              </DropdownMenu>
-            </CommentsSection>
+            <EditComment
+              key={comment.commentId}
+              comment={comment}
+              toggleDropdown={toggleDropdown}
+              handleUpdate={handleUpdate}
+              handleDelete={handleDelete}
+              dropdownStates={dropdownStates}
+            />
           ))}
         <h2 className="font-subTitle">댓글 작성</h2>
 
@@ -236,6 +208,7 @@ const Detail = () => {
               placeholder="내용을 입력해주세요."
               value={comments}
               onChange={(e) => setComments(e.target.value)}
+              onKeyDown={activeEnter}
             />
 
             <button className="btn-submit" type="submit">
