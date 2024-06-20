@@ -10,7 +10,7 @@ import CourseCard from '../components/HomePage/CourseCard';
 import MainBanner from '../components/HomePage/MainBanner';
 const HighBtn = styled.button`
   position: fixed;
-  bottom: 70px;
+  bottom: 5px;
   right: 5px;
   border: none;
   border-radius: 40px;
@@ -42,7 +42,7 @@ const SearchBtn = styled.img`
 const SearchInput = styled.input`
   width: 90%;
 `;
-const itemsPerPage = 4;
+const itemsPerPage = 8;
 
 function HomePage() {
   const searchRef = useRef(null);
@@ -51,7 +51,7 @@ function HomePage() {
 
   useEffect(() => {
     if (searchRef.current) searchRef.current.focus();
-  }, [courses]);
+  }, []);
 
   const fetchVideos = async ({ pageParam = 0 }) => {
     const start = pageParam * itemsPerPage;
