@@ -10,7 +10,7 @@ import CourseCard from '../components/HomePage/CourseCard';
 import MainBanner from '../components/HomePage/MainBanner';
 const HighBtn = styled.button`
   position: fixed;
-  bottom: 70px;
+  bottom: 5px;
   right: 5px;
   border: none;
   border-radius: 40px;
