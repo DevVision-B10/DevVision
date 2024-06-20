@@ -16,6 +16,7 @@ const VideoSection = () => {
     queryKey: ['video', id],
     queryFn: () => videoApi(id)
   });
+  console.log(video);
 
   if (isLoading) return <div>loading...</div>;
 
@@ -24,7 +25,7 @@ const VideoSection = () => {
     <Section>
       <SVContainer>
         <SpanContainer>
-          <Span>{video[0].snippet.title}</Span>
+          <Span>{video[0]}</Span>
           <BackBtn onClick={() => navigate(-1)}>↩</BackBtn>
         </SpanContainer>
         <VideoContainer>

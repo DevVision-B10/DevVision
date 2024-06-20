@@ -7,11 +7,11 @@ export const videoApi = async (id) => {
   try {
     const response = await axios.get(VITE_YOUTUBEVIDEO_ID, {
       params: {
-        part: id,
+        part: 'snippet',
+        id: id,
         key: YOUTUBE_KEY
       }
     });
-    console.log(response.data.items);
     return response.data.items;
   } catch (err) {
     console.error(err);
