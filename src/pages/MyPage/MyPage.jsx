@@ -14,7 +14,6 @@ function MyPage() {
     <div>
       <SideBar user={user} handleOnClickSideBarCategory={handleOnClickSideBarCategory} />
       {displayComponent === 'recentVideos' && <RecentlyVideosComponent user={user} />}
-      {/* {displayComponent === 'chart' && <ChartComponent user={user} />} */}
     </div>
   );
 }
