@@ -3,7 +3,6 @@ import Layout from '../Layout/Layout';
 import HomePage from '../components/HomePage/HomePage';
 import LogInRedirect from '../components/LogIn/LogInRedirect';
 import PlayListDetail from '../pages/PlayListDetail/PlayListDetail';
-import MyPage from '../pages/HomePage/MyPage/Mypage';
 
 const router = createBrowserRouter([
   {
@@ -22,8 +21,8 @@ const router = createBrowserRouter([
         element: <PlayListDetail />
       },
       {
-        path: '/mypage',
-        element: <MyPage />
+        path: '/watch/:id',
+        element: <div>페이지 이동 확인</div>
       }
     ]
   }
