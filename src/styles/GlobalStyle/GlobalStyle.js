@@ -6,14 +6,27 @@ export const GlobalStyle = createGlobalStyle`
 body {
 	overflow-y: ${(props) => (props.visible ? 'hidden' : 'auto')};
   overflow-x: hidden;
+  font-family: 'Pretendard Variable';
 }
 div{
 	box-sizing: border-box;
 }
+
 button{
 	border-radius: 15px;
 	cursor: pointer;
 	padding: 10px;
+}
+textarea{
+  height: 100px;
+  resize: none;
+  outline: none;
+  padding: 10px;
+  border: 1px solid var(--peach-color);
+  border-radius: 8px;
+}
+li{
+  cursor: pointer;
 }
 input{
 	padding:8px;
@@ -28,7 +41,6 @@ input{
 	width: 100%;
 	align-items: center;
   background-color: white;
-	background-color: white;
   border: 1px dashed black;
 	&:hover {
     font-weight: bold;
@@ -52,6 +64,21 @@ input{
     transition: all 0.3s;
   }
 }
+
+.btn-submit{
+  margin: auto;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: transparent;
+
+  &:hover {
+    background-color: var(--yellow-color);
+    transition: background-color 0.3s ease-in-out 0s;
+  }
+}
 .d-flex-row{
 	display: flex;
   flex-direction: row;
@@ -62,11 +89,30 @@ input{
   flex-direction: column;
   gap: 15px;
 }
+.font-bigTitle{
+  margin: 30px 0px 5px;
+  font-weight: 900;
+  font-size: 1.8rem;
+}
 .font-title{
 	font-size: 20px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 15px;
+}
+.font-subTitle{
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 10px;
+}
+.font-strong{
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.font-small{
+  margin-right: 20px;
+  font-weight: 200;
+  font-size: 0.6rem;
 }
 .modal{
 	width:400px;
@@ -86,5 +132,11 @@ input{
   align-items: center;
   justify-content: center;
 	z-index:5;
+}
+
+.border-box{
+  padding: 25px;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
 }
 `;

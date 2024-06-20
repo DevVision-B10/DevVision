@@ -1,51 +1,85 @@
 import { useEffect, useState } from 'react';
-import supabase from '../../supabase/config';
 import { v4 as uuidv4 } from 'uuid';
-import playBtn from '../../assets/playBtn.png';
-import threeDots from '../../assets/ellipsis-menu-icon.png';
-import {
-  CommentForm,
-  CommentFormContainer,
-  CommentH2,
-  CommentHeader,
-  CommentsSection,
-  Container,
-  CourseList,
-  CreatedAt,
-  Details,
-  DropdownItem,
-  DropdownMenu,
-  Image,
-  List,
-  ListItem,
-  MenuButton,
-  MenuImg,
-  PlayBtn,
-  StContent,
-  StH2,
-  StInput,
-  StMenuWrap,
-  StyledLink,
-  SubmitButton,
-  SubmitButtonWrap,
-  TeacherName,
-  Title,
-  UserEmail
-} from './PlayListDetailStyle';
+import threeDots from '../assets/ellipsis-menu-icon.png';
+import playBtn from '../assets/playBtn.png';
+import supabase from '../supabase/config';
 
 import { useQuery } from '@tanstack/react-query';
-import { fetchApi } from '../../api/playlistApi';
 import { useParams } from 'react-router-dom';
-import useLogStore from '../../zustand/user-log';
+import styled from 'styled-components';
+import { fetchApi } from '../api/playlistApi';
+import useLogStore from '../zustand/user-log';
 
 // 1. 코딩애플 유튜브 id
 // 2. id를 이용해서 관련 목록을 가지고 올 방법이 있는지 찾아보는 것
 // PLfLgtT94nNq0qTRunX9OEmUzQv4lI4pnP -> 코딩애플 유튜브 채널 id -> 재생목록 리스트 [{}, {}, ...] ->
+const Img = styled.img`
+  cursor: pointer;
+`;
+const Container = styled.div`
+  max-width: 700px;
+  margin: auto;
+`;
+const DropdownMenu = styled.ul`
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background-color: var(--white-color);
+  box-shadow: 0 2px 10px var(--black-color);
+  border-radius: 10px;
+  padding: 5px 0px;
+  display: ${({ $isopen }) => ($isopen ? 'block' : 'none')};
+`;
 
+const DropdownItem = styled.li`
+  cursor: pointer;
+  list-style-type: none;
+  background: none;
+  padding: 10px;
+  text-align: left;
+  &:hover {
+    background-color: var(--button-hover-color);
+  }
+`;
+const CourseList = styled.section`
+  width: 100%;
+  margin: 10px auto;
+  height: 40px;
+  border-top: 2px solid var(--lime-color);
+  border-bottom: 2px solid var(--lime-color);
+`;
+const CommentHeader = styled.div`
+  background-color: var(--yellow-color);
+  justify-content: space-between;
+  line-height: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+`;
+const Details = styled.div`
+  width: 100%;
+  height: auto;
+  font-size: 1rem;
+  line-height: 32px;
+  margin: 20px auto;
+  text-overflow: ellipsis;
+`;
+
+const CommentsSection = styled.section`
+  border: 1px solid #f1f6f6;
+  border-radius: 10px;
+  position: relative;
+`;
+
+const StContent = styled.p`
+  min-height: 60px;
+  padding: 10px 5px;
+  font-size: 15px;
+  line-height: 25px;
+`;
 const Detail = () => {
   const { id } = useParams();
-  // console.log(params.id);
-  // const params = { id: 'PLfLgtT94nNq0qTRunX9OEmUzQv4lI4pnP' };
   const [commentsInfo, setCommentsInfo] = useState([]);
   const [comments, setComments] = useState('');
   const [dropdownStates, setDropdownStates] = useState({});
@@ -150,48 +184,41 @@ const Detail = () => {
   if (!playlist || playlist.length === 0) return <div>유효한 데이터가 없습니다.</div>;
 
   return (
-    <Container>
-      <Title>{playlist[0].snippet.title}</Title>
-      <TeacherName>{playlist[0].snippet.channelTitle}</TeacherName>
-      <Image src={playlist[0].snippet.thumbnails.standard.url} alt="React 강의" />
+    <Container className="d-flex-column">
+      <h1 className="font-bigTitle">{playlist[0].snippet.title}</h1>
+      <h2>{playlist[0].snippet.channelTitle}</h2>
+      <img src={playlist[0].snippet.thumbnails.standard.url} alt="React 강의" />
       <Details>{playlist[0].snippet.description}</Details>
 
       <CourseList>
-        <div>
-          <StH2>관련 강의 목록</StH2>
-        </div>
+        <h2 className="font-subTitle">관련 강의 목록</h2>
       </CourseList>
 
-      <List>
+      <ul className="d-flex-column">
         {playlist.map((item) => (
-          <StyledLink key={item.id}>
-            <ListItem>
-              <PlayBtn src={playBtn} alt="플레이어 버튼" />
-              <span>{item.snippet.title}</span>
-            </ListItem>
-          </StyledLink>
+          <li className="d-flex-row border-box" key={item.id}>
+            <img src={playBtn} alt="플레이어 버튼" width="18px" />
+            <span>{item.snippet.title}</span>
+          </li>
         ))}
-      </List>
+      </ul>
 
       <CourseList>
-        <div>
-          <StH2>강의평</StH2>
-        </div>
+        <h2 className="font-subTitle">강의평</h2>
       </CourseList>
 
-      <div>
+      <div className="d-flex-column">
         {commentsInfo &&
           commentsInfo.map((comment) => (
             <CommentsSection key={comment.commentId}>
-              <CommentHeader>
+              <CommentHeader className="d-flex-row">
                 {/* userId 대신 user.email */}
-                <UserEmail>{comment.userId}</UserEmail>
-                <StMenuWrap>
-                  <CreatedAt>({comment.createdAt.slice(0, 10)})</CreatedAt>
-                  <MenuButton onClick={() => toggleDropdown(comment.commentId)}>
-                    <MenuImg src={threeDots} alt="Menu" />
-                  </MenuButton>
-                </StMenuWrap>
+                <h3 className="font-strong">{comment.userId}</h3>
+                <div className="d-flex-row">
+                  <span className="font-small">({comment.createdAt.slice(0, 10)})</span>
+
+                  <Img src={threeDots} alt="Menu" height="24px" onClick={() => toggleDropdown(comment.commentId)} />
+                </div>
               </CommentHeader>
               <StContent>{comment.content}</StContent>
               <DropdownMenu $isopen={dropdownStates[comment.commentId]}>
@@ -200,22 +227,22 @@ const Detail = () => {
               </DropdownMenu>
             </CommentsSection>
           ))}
-        <CommentH2>댓글 작성</CommentH2>
-        <CommentFormContainer>
-          <CommentForm onSubmit={handleSubmit}>
-            <StInput
+        <h2 className="font-subTitle">댓글 작성</h2>
+
+        <form onSubmit={handleSubmit}>
+          <div className="d-flex-column border-box">
+            <textarea
               type="text"
               placeholder="내용을 입력해주세요."
               value={comments}
               onChange={(e) => setComments(e.target.value)}
             />
-            <SubmitButtonWrap>
-              <SubmitButton type="submit">
-                <p>등록</p>
-              </SubmitButton>
-            </SubmitButtonWrap>
-          </CommentForm>
-        </CommentFormContainer>
+
+            <button className="btn-submit" type="submit">
+              등록
+            </button>
+          </div>
+        </form>
       </div>
     </Container>
   );

@@ -3,7 +3,7 @@ import Layout from '../Layout/Layout';
 import LogInRedirect from '../components/LogIn/LogInRedirect';
 
 import MyPage from '../pages/MyPage/MyPage';
-import PlayListDetail from '../pages/PlayListDetail/PlayListDetail';
+import PlayListDetail from '../pages/PlayListDetail';
 import TestPage from '../pages/TestPage/TestPage';
 import VideoPage from '../pages/VideoPage';
 
