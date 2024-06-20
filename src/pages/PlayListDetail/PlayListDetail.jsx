@@ -2,58 +2,46 @@ import { useEffect, useState } from 'react';
 import supabase from '../../supabase/config';
 import { v4 as uuidv4 } from 'uuid';
 import playBtn from '../../assets/playBtn.png';
-import threeDots from '../../assets/ellipsis-menu-icon.png';
 import {
   CommentForm,
   CommentFormContainer,
   CommentH2,
-  CommentHeader,
-  CommentsSection,
   Container,
   CourseList,
-  CreatedAt,
   Details,
-  DropdownItem,
-  DropdownMenu,
   Image,
   List,
   ListItem,
-  MenuButton,
-  MenuImg,
   PlayBtn,
-  StContent,
+  StCommentInput,
   StH2,
-  StInput,
-  StMenuWrap,
   StyledLink,
   SubmitButton,
   SubmitButtonWrap,
   TeacherName,
-  Title,
-  UserEmail
+  Title
 } from './PlayListDetailStyle';
-
 import { useQuery } from '@tanstack/react-query';
-import { fetchApi } from '../../api/playlistApi';
+import { fetchPlaylist } from '../../api/playlistApi';
 import { useParams } from 'react-router-dom';
 import useLogStore from '../../zustand/user-log';
-
-// 1. 코딩애플 유튜브 id
-// 2. id를 이용해서 관련 목록을 가지고 올 방법이 있는지 찾아보는 것
-// PLfLgtT94nNq0qTRunX9OEmUzQv4lI4pnP -> 코딩애플 유튜브 채널 id -> 재생목록 리스트 [{}, {}, ...] ->
+import { EditComment } from '../../components/EditComment/EditComment';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 const Detail = () => {
   const { id } = useParams();
-  // console.log(params.id);
-  // const params = { id: 'PLfLgtT94nNq0qTRunX9OEmUzQv4lI4pnP' };
   const [commentsInfo, setCommentsInfo] = useState([]);
   const [comments, setComments] = useState('');
   const [dropdownStates, setDropdownStates] = useState({});
   const { user } = useLogStore();
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
 
   useEffect(() => {
     const fetchComments = async () => {
-      const { data: Comments, error } = await supabase.from('Comments').select('*');
+      const { data: Comments, error } = await supabase.from('Comments').select('*').eq('playlistId', id);
       if (error) {
         console.error(error);
         alert('supabase에서 데이터를 가져오는 중 오류가 발생했습니다.');
@@ -62,21 +50,23 @@ const Detail = () => {
       setCommentsInfo(Comments);
     };
     fetchComments();
-  }, []);
+  }, [id]);
 
   const {
     data: playlist,
     isLoading,
     error
   } = useQuery({
-    queryKey: ['test', id],
-    queryFn: () => fetchApi(id)
+    queryKey: ['playlist', id],
+    queryFn: () => fetchPlaylist(id)
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!comments.trim()) return alert('댓글 내용을 입력해주세요');
+    if (!user) return alert('로그인을 해주세요.');
+    const date = dayjs().tz(dayjs.tz.guess()).format('YYYY-MM-DD HH:mm:ss');
 
     try {
       const { data, error } = await supabase
@@ -86,7 +76,8 @@ const Detail = () => {
           userId: user.id,
           playlistId: id,
           content: comments,
-          createdAt: new Date().toISOString()
+          createdAt: date,
+          email: user.email
         })
         .select('*');
 
@@ -102,9 +93,18 @@ const Detail = () => {
       console.error('오류 발생:', err);
       alert('오류가 발생했습니다.');
     }
+
+    alert('댓글 작성이 완료됐습니다!');
   };
 
-  const handleUpdate = async (commentIdToUpdate) => {
+  const activeEnter = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
+  const handleUpdate = async (commentIdToUpdate, comments) => {
+    if (!user) return alert('로그인을 해주세요.');
     const { error } = await supabase.from('Comments').update({ content: comments }).eq('commentId', commentIdToUpdate);
     if (error) {
       console.error('댓글 수정 중 오류 발생:', error);
@@ -122,6 +122,7 @@ const Detail = () => {
   };
 
   const handleDelete = async (commentIdToDelete) => {
+    if (!user) return alert('로그인을 해주세요.');
     const confirmed = confirm('정말로 댓글을 삭제하시겠습니까?');
     if (confirmed) {
       const { error } = await supabase.from('Comments').delete().eq('commentId', commentIdToDelete).select();
@@ -153,18 +154,18 @@ const Detail = () => {
     <Container>
       <Title>{playlist[0].snippet.title}</Title>
       <TeacherName>{playlist[0].snippet.channelTitle}</TeacherName>
-      <Image src={playlist[0].snippet.thumbnails.standard.url} alt="React 강의" />
+      <Image src={playlist[0].snippet.thumbnails.standard?.url || '기본 이미지 주소'} alt="React 강의" />
       <Details>{playlist[0].snippet.description}</Details>
 
       <CourseList>
         <div>
-          <StH2>관련 강의 목록</StH2>
+          <StH2>강의 목록</StH2>
         </div>
       </CourseList>
 
       <List>
         {playlist.map((item) => (
-          <StyledLink key={item.id}>
+          <StyledLink key={item.id} to={`/watch/${item.snippet.resourceId.videoId}`}>
             <ListItem>
               <PlayBtn src={playBtn} alt="플레이어 버튼" />
               <span>{item.snippet.title}</span>
@@ -182,32 +183,24 @@ const Detail = () => {
       <div>
         {commentsInfo &&
           commentsInfo.map((comment) => (
-            <CommentsSection key={comment.commentId}>
-              <CommentHeader>
-                {/* userId 대신 user.email */}
-                <UserEmail>{comment.userId}</UserEmail>
-                <StMenuWrap>
-                  <CreatedAt>({comment.createdAt.slice(0, 10)})</CreatedAt>
-                  <MenuButton onClick={() => toggleDropdown(comment.commentId)}>
-                    <MenuImg src={threeDots} alt="Menu" />
-                  </MenuButton>
-                </StMenuWrap>
-              </CommentHeader>
-              <StContent>{comment.content}</StContent>
-              <DropdownMenu $isopen={dropdownStates[comment.commentId]}>
-                <DropdownItem onClick={() => handleUpdate(comment.commentId)}>수정하기</DropdownItem>
-                <DropdownItem onClick={() => handleDelete(comment.commentId)}>삭제하기</DropdownItem>
-              </DropdownMenu>
-            </CommentsSection>
+            <EditComment
+              key={comment.commentId}
+              comment={comment}
+              toggleDropdown={toggleDropdown}
+              handleUpdate={handleUpdate}
+              handleDelete={handleDelete}
+              dropdownStates={dropdownStates}
+            />
           ))}
         <CommentH2>댓글 작성</CommentH2>
         <CommentFormContainer>
           <CommentForm onSubmit={handleSubmit}>
-            <StInput
+            <StCommentInput
               type="text"
               placeholder="내용을 입력해주세요."
               value={comments}
               onChange={(e) => setComments(e.target.value)}
+              onKeyDown={activeEnter}
             />
             <SubmitButtonWrap>
               <SubmitButton type="submit">
