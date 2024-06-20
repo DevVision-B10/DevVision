@@ -1,29 +1,46 @@
 import styled from 'styled-components';
-import WatchSideBar from './WatchSideBar';
 import YouTube from 'react-youtube';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { videoApi } from '../../api/videoApi';
 
 const VideoSection = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  // TODO: id를 이용해서 동영상 정보를 가져오는 API를 찾는다.
+  console.log(id);
+  const {
+    data: video,
+    isLoading,
+    error
+  } = useQuery({
+    queryKey: ['video', id],
+    queryFn: () => videoApi(id)
+  });
+
+  if (isLoading) return <div>loading...</div>;
+
+  if (error) return <div>데이터 로드 중 오류가 발생했습니다.</div>;
   return (
     <Section>
       <SVContainer>
         <SpanContainer>
-          <Span>영상제목</Span>
+          <Span>{video[0].snippet.title}</Span>
           <BackBtn onClick={() => navigate(-1)}>↩</BackBtn>
         </SpanContainer>
         <VideoContainer>
           <YouTube
-            videoId="S-urPnZysx0" //동영상 주소
+            // videoId="S-urPnZysx0" //동영상 주소
+            videoId={id}
             opts={{
               width: '800px',
-              height: '500px',
-              playerVars: {
-                autoplay: 0, //자동 재생 여부
-                modestbranding: 1, //컨트롤 바에 유튜브 로고 표시 여부
-                loop: 0, //반복 재생
-                playlist: 'S-urPnZysx0' //반복 재생으로 재생할 플레이 리스트
-              }
+              height: '500px'
+              // playerVars: {
+              //   autoplay: 0, //자동 재생 여부
+              //   modestbranding: 1, //컨트롤 바에 유튜브 로고 표시 여부
+              //   loop: 0, //반복 재생
+              //   playlist: 'S-urPnZysx0' //반복 재생으로 재생할 플레이 리스트
+              // }
             }}
             onReady={(e) => {
               e.target.mute(); //소리 끔
@@ -31,7 +48,6 @@ const VideoSection = () => {
           />
         </VideoContainer>
       </SVContainer>
-      <WatchSideBar />
     </Section>
   );
 };
