@@ -117,7 +117,7 @@ const Detail = () => {
 
     navigate(`/watch/${videoId}`);
   };
-
+  console.log(playlist);
   if (isLoading) return <div>loading...</div>;
 
   if (error) return <div>데이터 로드 중 오류가 발생했습니다.</div>;
