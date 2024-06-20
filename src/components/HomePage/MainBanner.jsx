@@ -19,6 +19,8 @@ const BannerImage = styled.img`
   object-fit: cover;
 `;
 
+const images = [Banner1, Banner2, Banner3];
+
 const MainBanner = () => {
   const settings = {
     dots: true,
@@ -29,8 +31,6 @@ const MainBanner = () => {
     autoplay: true,
     autoplaySpeed: 3000
   };
-
-  const images = [Banner1, Banner2, Banner3];
 
   return (
     <BannerContainer>

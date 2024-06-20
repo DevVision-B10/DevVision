@@ -22,3 +22,24 @@ export const deleteUser = async (email) => {
 
   return data;
 };
+
+export const signInOAuth = async (logInType) => {
+  try {
+    await supabase.auth.signInWithOAuth({
+      provider: logInType,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+  } catch (error) {
+    alert('로그인페이지로 가는 도중에 문제가 생겼습니다');
+  }
+};
+
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    alert('로그아웃에 실패하였습니다!');
+    return;
+  }
+};
