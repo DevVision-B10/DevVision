@@ -44,7 +44,10 @@ function RecentlyVideosComponent({ user }) {
       }
 
       const videoIds = recentVideos.join(',');
-      return await getVideoData(videoIds);
+      return await getVideoData('videos', {
+        part: 'snippet',
+        id: videoIds
+      });
     },
     enabled: recentVideos.length > 0
   });

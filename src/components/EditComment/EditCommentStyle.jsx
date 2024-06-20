@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-// TODO: style 추가하기
 export const CommentsSection = styled.section`
   display: flex;
   flex-direction: column;

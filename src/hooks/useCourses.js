@@ -1,4 +1,4 @@
-import api from '../api/api';
+import { getChannelData } from '../api/youtube/youtube.api';
 import { COURSES_DATA, SEARCHED_PLAYLIST } from '../const/data';
 const cache = new Map();
 
@@ -8,14 +8,8 @@ const fetchChannelThumbnail = async (channelId) => {
   }
 
   try {
-    // TODO: 너 옮겨
+    const response = await getChannelData(channelId);
 
-    const response = await api.get('/channels', {
-      params: {
-        part: 'snippet',
-        id: channelId
-      }
-    });
     const thumbnailUrl = response.data.items[0].snippet.thumbnails.default.url;
     cache.set(channelId, thumbnailUrl);
     return thumbnailUrl;
@@ -33,17 +27,8 @@ const useCourses = async ({ searchQuery }) => {
   }
 
   try {
-    // TODO : 주석친구들 모두 옮겨
-    // const response = await api.get('/search', {
-    //   params: {
-    //     part: 'snippet',
-    //     maxResults: 50,
-    //     q: searchQuery || import.meta.env.VITE_YOUTUBE_PARAM,
-    //     order: 'relevance',
-    //     type: 'playlist'
-    //   }
-    // });
-    // TODO: import 하기
+    // await getSearchData(searchQuery);
+
     const response = {
       data: {
         items: SEARCHED_PLAYLIST
@@ -62,7 +47,6 @@ const useCourses = async ({ searchQuery }) => {
     //     };
     //   })
     // );
-    // TODO: import 하기
     const coursesData = COURSES_DATA;
 
     cache.set(cacheKey, coursesData);
