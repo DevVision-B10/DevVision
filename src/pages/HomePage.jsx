@@ -11,7 +11,7 @@ import MainBanner from '../components/HomePage/MainBanner';
 const HighBtn = styled.button`
   position: fixed;
   bottom: 70px;
-  right: 70px;
+  right: 5px;
   border: none;
   border-radius: 40px;
   background-color: var(--yellow-color);
