@@ -1,17 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../Layout/Layout';
-import HomePage from '../components/HomePage/HomePage';
 import LogInRedirect from '../components/LogIn/LogInRedirect';
+import useCourses from '../hooks/useCourses';
+import HomePage from '../pages/HomePage';
+import MyPage from '../pages/Mypage';
 import PlayListDetail from '../pages/PlayListDetail/PlayListDetail';
-import MyPage from '../pages/HomePage/MyPage/Mypage';
-
+import UnknownPage from '../pages/UnknownPage';
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       {
         path: '/',
-        element: <HomePage />
+        element: <HomePage />,
+        loader: useCourses
       },
       {
         path: '/auth/callback',
@@ -24,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: '/mypage',
         element: <MyPage />
+      },
+      {
+        path: '*',
+        element: <UnknownPage />
       }
     ]
   }
