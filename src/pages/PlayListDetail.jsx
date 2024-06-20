@@ -197,7 +197,7 @@ const Detail = () => {
       <ul className="d-flex-column">
         {playlist.map((item) => (
           <li className="d-flex-row border-box" key={item.id}>
-            <img src={playBtn} alt="플레이어 버튼" width="18px" />
+            <img src={playBtn} alt="플레이어 버튼" height="18px" />
             <span>{item.snippet.title}</span>
           </li>
         ))}
