@@ -458,7 +458,7 @@ export const fetchPlaylist = async (playlistId) => {
         key: YOUTUBE_KEY
       }
     });
-    console.log(response.data);
+
     return response.data.items;
   } catch (err) {
     console.error(err);

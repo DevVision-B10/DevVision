@@ -14,8 +14,8 @@ import {
   List,
   ListItem,
   PlayBtn,
+  StCommentInput,
   StH2,
-  StInput,
   StyledLink,
   SubmitButton,
   SubmitButtonWrap,
@@ -86,6 +86,12 @@ const Detail = () => {
     } catch (err) {
       console.error('오류 발생:', err);
       alert('오류가 발생했습니다.');
+    }
+  };
+
+  const activeEnter = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
     }
   };
 
@@ -179,11 +185,12 @@ const Detail = () => {
         <CommentH2>댓글 작성</CommentH2>
         <CommentFormContainer>
           <CommentForm onSubmit={handleSubmit}>
-            <StInput
+            <StCommentInput
               type="text"
               placeholder="내용을 입력해주세요."
               value={comments}
               onChange={(e) => setComments(e.target.value)}
+              onKeyDown={activeEnter}
             />
             <SubmitButtonWrap>
               <SubmitButton type="submit">
