@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+// TODO: 너 사라져야함
+// 인자로 url 카테고리를 인자로 받아야함 -> id 랑 카테고리가 들어간 객체를 인자로 받아야함
+
 const VIDEO_PLAYLISTITEM_URL = import.meta.env.VITE_YOUTUBE_PLAYLIST_ITEM_URL;
 const YOUTUBE_KEY = import.meta.env.VITE_YOUTUBE_KEY;
 

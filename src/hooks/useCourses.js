@@ -1,59 +1,76 @@
-import { useState, useEffect } from 'react';
 import api from '../api/api';
+import { COURSES_DATA, SEARCHED_PLAYLIST } from '../const/data';
+const cache = new Map();
 
-const useCourses = (searchQuery) => {
-  const [courses, setCourses] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+const fetchChannelThumbnail = async (channelId) => {
+  if (cache.has(channelId)) {
+    return cache.get(channelId);
+  }
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.get('/search', {
-          params: {
-            part: 'snippet',
-            maxResults: 5,
-            q: searchQuery || import.meta.env.VITE_YOUTUBE_PARAM,
-            order: 'relevance',
-            type: 'playlist'
-          }
-        });
+  try {
+    // TODO: 너 옮겨
 
-        const channelIds = [...new Set(response.data.items.map((item) => item.snippet.channelId))];
+    const response = await api.get('/channels', {
+      params: {
+        part: 'snippet',
+        id: channelId
+      }
+    });
+    const thumbnailUrl = response.data.items[0].snippet.thumbnails.default.url;
+    cache.set(channelId, thumbnailUrl);
+    return thumbnailUrl;
+  } catch (err) {
+    console.error(`Error fetching channel thumbnail for channelId: ${channelId}`, err);
+    return '';
+  }
+};
 
-        const channelsResponse = await api.get('/channels', {
-          params: {
-            part: 'snippet',
-            id: channelIds.join(',')
-          }
-        });
+const useCourses = async ({ searchQuery }) => {
+  const cacheKey = `courses-${searchQuery || import.meta.env.VITE_YOUTUBE_PARAM}`;
 
-        const channelsData = channelsResponse.data.items.reduce((acc, item) => {
-          acc[item.id] = item.snippet.thumbnails.default.url;
-          return acc;
-        }, {});
+  if (cache.has(cacheKey)) {
+    return cache.get(cacheKey);
+  }
 
-        const coursesData = response.data.items.map((item) => ({
-          id: item.id.playlistId,
-          title: item.snippet.title,
-          channelTitle: item.snippet.channelTitle,
-          image: item.snippet.thumbnails.high.url,
-          channelThumbnail: channelsData[item.snippet.channelId]
-        }));
-
-        setCourses(coursesData);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+  try {
+    // TODO : 주석친구들 모두 옮겨
+    // const response = await api.get('/search', {
+    //   params: {
+    //     part: 'snippet',
+    //     maxResults: 50,
+    //     q: searchQuery || import.meta.env.VITE_YOUTUBE_PARAM,
+    //     order: 'relevance',
+    //     type: 'playlist'
+    //   }
+    // });
+    // TODO: import 하기
+    const response = {
+      data: {
+        items: SEARCHED_PLAYLIST
       }
     };
 
-    fetchCourses();
-  }, [searchQuery]);
+    // const coursesData = await Promise.all(
+    //   response.data.items.map(async (item) => {
+    //     const channelThumbnail = await fetchChannelThumbnail(item.snippet.channelId);
+    //     return {
+    //       id: item.id.playlistId,
+    //       title: item.snippet.title,
+    //       channelTitle: item.snippet.channelTitle,
+    //       image: item.snippet.thumbnails.high.url,
+    //       channelThumbnail: channelThumbnail
+    //     };
+    //   })
+    // );
+    // TODO: import 하기
+    const coursesData = COURSES_DATA;
 
-  return { courses, isLoading, error };
+    cache.set(cacheKey, coursesData);
+    return coursesData;
+  } catch (err) {
+    console.error('Error fetching courses', err);
+    return [];
+  }
 };
 
 export default useCourses;
