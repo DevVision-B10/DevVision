@@ -1,11 +1,17 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import LogInRedirect from '../components/LogIn/LogInRedirect';
+
+import MyPage from '../pages/MyPage/MyPage';
+import PlayListDetail from '../pages/PlayListDetail/PlayListDetail';
+import TestPage from '../pages/TestPage/TestPage';
+import VideoPage from '../pages/VideoPage';
+
 import useCourses from '../hooks/useCourses';
 import HomePage from '../pages/HomePage';
-import MyPage from '../pages/Mypage';
-import PlayListDetail from '../pages/PlayListDetail/PlayListDetail';
+
 import UnknownPage from '../pages/UnknownPage';
+
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -22,6 +28,14 @@ const router = createBrowserRouter([
       {
         path: '/playlist/:id',
         element: <PlayListDetail />
+      },
+      {
+        path: '/test',
+        element: <TestPage />
+      },
+      {
+        path: '/video/:videoId',
+        element: <VideoPage />
       },
       {
         path: '/mypage',
