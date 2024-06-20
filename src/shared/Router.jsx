@@ -4,7 +4,6 @@ import LogInRedirect from '../components/LogIn/LogInRedirect';
 import WatchPage from '../pages/WatchPage/WatchPage';
 import PlayListDetail from '../pages/PlayListDetail/PlayListDetail';
 import VideoPage from '../pages/VideoPage';
-// cSpell:ignore watchpage
 import TestPage from '../pages/TestPage/TestPage';
 import useCourses from '../hooks/useCourses';
 import HomePage from '../pages/HomePage';

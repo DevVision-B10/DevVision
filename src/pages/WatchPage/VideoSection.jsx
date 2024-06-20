@@ -7,7 +7,6 @@ import { videoApi } from '../../api/videoApi';
 const VideoSection = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  // TODO: id를 이용해서 동영상 정보를 가져오는 API를 찾는다.
   console.log(id);
   const {
     data: video,
@@ -30,20 +29,13 @@ const VideoSection = () => {
         </SpanContainer>
         <VideoContainer>
           <YouTube
-            // videoId="S-urPnZysx0" //동영상 주소
             videoId={id}
             opts={{
               width: '800px',
               height: '500px'
-              // playerVars: {
-              //   autoplay: 0, //자동 재생 여부
-              //   modestbranding: 1, //컨트롤 바에 유튜브 로고 표시 여부
-              //   loop: 0, //반복 재생
-              //   playlist: 'S-urPnZysx0' //반복 재생으로 재생할 플레이 리스트
-              // }
             }}
             onReady={(e) => {
-              e.target.mute(); //소리 끔
+              e.target.mute();
             }}
           />
         </VideoContainer>
@@ -76,7 +68,7 @@ const Span = styled.span`
 `;
 
 const BackBtn = styled.button`
-  background-color: #e7e7c7; /* 배경 색상 설정 */
+  background-color: #e7e7c7;
   border: none;
   border-radius: 50%;
   width: 40px;

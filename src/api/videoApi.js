@@ -3,11 +3,11 @@ import axios from 'axios';
 const VITE_YOUTUBEVIDEO_ID = import.meta.env.VITE_YOUTUBE_VIDEO_ID;
 const YOUTUBE_KEY = import.meta.env.VITE_YOUTUBE_KEY;
 
-export const videoApi = async () => {
+export const videoApi = async (id) => {
   try {
     const response = await axios.get(VITE_YOUTUBEVIDEO_ID, {
       params: {
-        part: 'id',
+        part: id,
         key: YOUTUBE_KEY
       }
     });
