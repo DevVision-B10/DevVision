@@ -22,9 +22,9 @@ const VideoPage = () => {
       })
   });
 
-  if (isLoading) return 'loading';
+  if (isLoading) return <div>loading</div>;
 
-  if (error) return '데이터 로드 중 오류 발생';
+  if (error) return <div>데이터 로드 중 오류 발생</div>;
 
   return (
     <VideoContainer>
