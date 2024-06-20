@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const SideBarAside = styled.aside`
   border-right: 1px solid #d9d9d9;
@@ -32,23 +32,18 @@ export const SideBarNav = styled.nav`
   align-items: center;
 `;
 
-export const SideBarUl = styled.ul`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  & > li {
-    padding: 10px;
-    cursor: pointer;
-    font-size: 18px;
-  }
-`;
-
-export const SideBarButton = styled.button`
-  margin: 10px;
-  background-color: #ffffe0;
-  border: none;
-  padding: 15px;
+export const SideBarLi = styled.div`
   width: 100%;
+  padding: 20px;
+  cursor: pointer;
   font-size: 18px;
+  ${(props) =>
+    props.selected &&
+    css`
+      background-color: var(--sub-color);
+    `}
+
+  &:hover {
+    background-color: var(--sub-color);
+  }
 `;
