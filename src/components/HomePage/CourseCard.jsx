@@ -10,7 +10,7 @@ const Card = styled.div`
   box-shadow:
     0 4px 6px rgba(0, 0, 0, 0.1),
     0 1px 3px rgba(0, 0, 0, 0.08);
-  background-color: white;
+  background-color: var(--white-color);
   transition: box-shadow 0.3s ease-in-out;
 
   &:hover {
