@@ -10,7 +10,7 @@ import { EditComment } from '../../components/EditComment/EditComment';
 import { date } from '../../utils/common/date';
 import useRecentVideoStore from '../../zustand/recent-video';
 import useLogStore from '../../zustand/user-log';
-import { Container, CourseList, Details } from './PlayListDetailStyle';
+import { Container, CourseList, Details, SubmitButton, SubmitButtonWrap } from './PlayListDetailStyle';
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -176,9 +176,11 @@ const Detail = () => {
               onKeyDown={activeEnter}
             />
 
-            <button className="btn-submit" type="submit">
-              등록
-            </button>
+            <SubmitButtonWrap>
+              <SubmitButton type="submit">
+                <p>등록</p>
+              </SubmitButton>
+            </SubmitButtonWrap>
           </div>
         </form>
       </div>
