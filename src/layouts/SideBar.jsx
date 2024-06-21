@@ -1,17 +1,21 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteUser } from '../api/supabase/user.api';
 import useLogOut from '../hooks/useLogOut';
-import { SideBarAside, SideBarButton, SideBarImage, SideBarNav, SideBarUl, SideBarWrapper } from './SideBarStyle';
+import { SideBarAside, SideBarImage, SideBarLi, SideBarNav, SideBarWrapper } from './SideBarStyle';
 
 function SideBar({ user, handleOnClickSideBarCategory }) {
+  const [selectedCategory, setSelectedCategory] = useState('recentVideos');
   const handleLogout = useLogOut();
   const navigate = useNavigate();
 
   const handleOnClickRecentVideos = () => {
+    setSelectedCategory('recentVideos');
     handleOnClickSideBarCategory('recentVideos');
   };
 
   const handleOnClickChart = () => {
+    setSelectedCategory('chart');
     handleOnClickSideBarCategory('chart');
   };
 
@@ -36,11 +40,13 @@ function SideBar({ user, handleOnClickSideBarCategory }) {
         )}
         <p>{user.email}</p>
         <SideBarNav>
-          <SideBarUl>
-            <li onClick={handleOnClickRecentVideos}>최근 본 영상</li>
-            <li onClick={handleOnClickChart}>트렌드</li>
-          </SideBarUl>
-          <SideBarButton onClick={handleOnClickDeleteUser}>회원탈퇴</SideBarButton>
+          <SideBarLi onClick={handleOnClickRecentVideos} selected={selectedCategory === 'recentVideos'}>
+            최근 본 영상
+          </SideBarLi>
+          <SideBarLi onClick={handleOnClickChart} selected={selectedCategory === 'chart'}>
+            트렌드
+          </SideBarLi>
+          <SideBarLi onClick={handleOnClickDeleteUser}>회원탈퇴</SideBarLi>
         </SideBarNav>
       </SideBarWrapper>
     </SideBarAside>
